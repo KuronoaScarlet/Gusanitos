@@ -19,9 +19,6 @@
     <ClCompile Include="Source\Scene.cpp">
       <Filter>Scenes\Levels</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EntityManager.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Player.cpp">
       <Filter>Entities\Playable</Filter>
     </ClCompile>
@@ -67,9 +64,6 @@
     <ClInclude Include="Source\PQueue.h" />
     <ClInclude Include="Source\Queue.h" />
     <ClInclude Include="Source\Entity.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EntityManager.h">
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">

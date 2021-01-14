@@ -6,7 +6,6 @@
 #include "Window.h"
 #include "Player.h"
 #include "Collisions.h"
-#include "EntityManager.h"
 #include "Scene.h"
 
 #include "Defs.h"

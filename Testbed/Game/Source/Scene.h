@@ -5,6 +5,41 @@
 #include "Animation.h"
 
 
+class body
+{
+public:
+	fPoint position;
+	fPoint velocity;
+	fPoint acceleration;
+	fPoint force;
+	float mass;
+	SDL_Texture* texture;
+	Animation* currentAnim = nullptr;
+
+public:
+	void AddForce(fPoint df)
+	{
+		force += df;
+	}
+	void AddMomentum(fPoint dv)
+	{
+		velocity += dv;
+	}
+
+};
+
+class PhysicsEngine
+{
+public:
+	
+
+public:
+	float ForceGrav(float mass, float acc)
+	{
+		return mass * acc;;;;;;;;;;;;;;
+	}
+};
+
 class Scene : public Module
 {
 public:
@@ -32,14 +67,13 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	//Fonts
-	int scoreFont = -1;
-	char scoreText[10] = { "\0" };
-
-	bool firstEntry = true;
+		bool firstEntry = true;
 
 
 private:
+	body player;
+	PhysicsEngine integrator;
+	Animation idleAnimation;
 };
 
 

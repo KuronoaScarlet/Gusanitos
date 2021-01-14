@@ -6,7 +6,6 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "Player.h"
-#include "EntityManager.h"
 #include "Collisions.h"
 
 
@@ -27,7 +26,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	player = new Player();
-	entityManager = new EntityManager();
 	collisions = new Collisions(false);
 
 	AddModule(input);
@@ -35,8 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(scene);
-	AddModule(player);
-	AddModule(entityManager);
+	
 
 	// Render last to swap buffer
 
@@ -130,6 +127,7 @@ bool App::Update()
 	if (ret == true)
 		ret = PostUpdate();
 
+	dt = 0.016f;
 	FinishUpdate();
 
 	
