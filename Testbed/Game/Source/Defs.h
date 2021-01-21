@@ -2,6 +2,7 @@
 #define __DEFS_H__
 
 #include <stdio.h>
+#include <math.h>
 
 //  NULL just in case ----------------------
 
@@ -12,6 +13,8 @@
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
+
+#define G 6.6*pow(10,-4)
 
 // Deletes a buffer
 #define RELEASE( x ) \

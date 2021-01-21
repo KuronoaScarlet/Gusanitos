@@ -36,13 +36,8 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	
+	integrator.player->texture = app->tex->Load("Assets/Textures/player.png");
 	
-	player.texture = app->tex->Load("Assets/Textures/player.png");
-	player.position = { 10,10 };
-	player.mass = 10;
-	player.acceleration = { 0, 0 };
-	player.force = { 0, 0};
-	player.velocity = { 0, 0 };
 
 	app->collisions->active = true;
 
@@ -62,15 +57,16 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	if (player.position.y < 180)
+	if (integrator.player->position.y <= 186)
 	{
-		player.currentAnim = &idleAnimation;
-		//player.force.y = integrator.ForceGrav(player.mass, -9.8f);
+		integrator.player->currentAnim = &idleAnimation;
 
-		player.position.x = player.velocity.x * dt;
-		player.acceleration.y += -9.8;
-		player.velocity.y += player.acceleration.y;
-		player.position.y = -(player.velocity.y * dt - 0.5 * player.acceleration.y * dt * (dt-0.016f));
+
+		integrator.ForceGrav();
+
+		integrator.player->position.y += integrator.player->gravity.y;
+
+
 	}
 	
 	return true;
@@ -83,9 +79,9 @@ bool Scene::PostUpdate()
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	ret = false;
-	SDL_Rect rectPlayer;
-	rectPlayer = player.currentAnim->GetCurrentFrame();
-	app->render->DrawTexture(player.texture, player.position.x, player.position.y, &rectPlayer);
+	
+	integrator.player->Draw();
+	
 
 	return ret;
 }
