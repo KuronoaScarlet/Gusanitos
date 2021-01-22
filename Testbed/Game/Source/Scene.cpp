@@ -73,16 +73,16 @@ bool Scene::Update(float dt)
 
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			integrator.player->position += {-1, 0};
+			integrator.AddMomentum({ -4000,0 });
 
 		}
 		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
-			integrator.player->position += {1, 0};
+			integrator.AddMomentum({ 4000,0 });
 		}
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 		{
-			
+			integrator.AddMomentum({ 0,-5000 });
 		}
 		
 		///////////////////TOTAL FORCES////////////////////////////////////

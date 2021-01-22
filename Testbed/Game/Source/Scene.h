@@ -79,7 +79,7 @@ class PhysicsEngine
 public:
 	PhysicsEngine() {}
 	Body* player = new Body(100.0f, 185.0f,60,16,16);
-	Body* world = new Body(200, 200000.0f, 900000000000.0f,1000.0f, 1000.0f); //490.0f, 8500.0f, 100000000000.0f,300.0f, 300.0f
+	Body* world = new Body(250, 25000.0f, 900000000000.0f,1000.0f, 1000.0f); //490.0f, 8500.0f, 100000000000.0f,300.0f, 300.0f
 	
 
 public:
@@ -119,7 +119,11 @@ public:
 		player->velocity.x += player->acceleration.x * dt;
 		player->velocity.y += player->acceleration.y * dt;
 	}
-
+	void AddMomentum(fPoint momentum)
+	{
+		if (momentum.x != 0) player->velocity.x = momentum.x / player->mass;
+		if (momentum.y != 0) player->velocity.y = momentum.y / player->mass;
+	}
 	float norm(fPoint p0, fPoint p1)
 	{
 		fPoint v;
