@@ -38,16 +38,13 @@ bool Scene::Start()
 	
 	integrator.player->texture = app->tex->Load("Assets/Textures/player.png");
 	
-
 	app->collisions->active = true;
 
-	//app->collisions->AddCollider({ 0, 300, 1280, 30 }, Collider::Type::FLOOR, this);
-
-	app->collisions->AddCollider({ 0,200,1000,100 }, Collider::Type::FLOOR, this);
+	app->collisions->AddCollider({ 0,200,1000,50 }, Collider::Type::FLOOR, this);
 
 	app->collisions->AddCollider({ 0,0,1000,200 }, Collider::Type::AIR, this);
 
-	integrator.player->collider = app->collisions->AddCollider(SDL_Rect{ (int)integrator.player->position.x,(int)integrator.player->position.y,12,11 }, Collider::Type::PLAYER, this);
+	integrator.player->collider = app->collisions->AddCollider(SDL_Rect{ (int)integrator.player->position.x,(int)integrator.player->position.y, 12, 11 }, Collider::Type::PLAYER, this);
 
 
 	firstEntry = false;
@@ -67,38 +64,31 @@ bool Scene::Update(float dt)
 	integrator.player->collider->SetPos((int)integrator.player->position.x, (int)integrator.player->position.y);
 	if (integrator.player->position.y <= 1800.0f)
 	{
-		/////////////////////PLAYER//////////////////////////
+		///////////////////////PLAYER//////////////////////////
 		integrator.player->currentAnim = &idleAnimation;
 		integrator.player->center = { integrator.player->position.x + (integrator.player->size.x/2), integrator.player->position.y + (integrator.player->size.y / 2) };
 
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			integrator.AddMomentum({ -4000,0 });
+			integrator.AddMomentum({ -3000,0 });
 
 		}
 		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
-			integrator.AddMomentum({ 4000,0 });
+			integrator.AddMomentum({ 3000,0 });
 		}
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && integrator.player->jumping == false)
 		{
 			integrator.AddMomentum({ 0,-5000 });
+			integrator.player->jumping = true;
 		}
 		
-		///////////////////TOTAL FORCES////////////////////////////////////
-
+		/////////////////////////TOTAL FORCES////////////////////////////////////
 		integrator.ForceGrav();
 				
 		integrator.Acceleration();
 
 		integrator.Integrator(dt);
-
-		
-		
-		
-		
-
-
 	}
 	
 	return true;
@@ -128,12 +118,10 @@ void Scene::OnCollision(Collider* a, Collider* b)
 		integrator.player->velocity = { 0,0 };
 		integrator.player->normalForce.x = -integrator.player->gravityForce.x;
 		integrator.player->normalForce.y = -integrator.player->gravityForce.y;
-		
+		integrator.player->jumping = false;
+
+		integrator.player->position.y = a->rect.y - a->rect.h + 39;
 	}
-	/*if (a->type == Collider::Type::AIR && b->type == Collider::Type::PLAYER && collision == true)
-	{
-		collision = false;
-	}*/
 }
 
 // Called before quitting

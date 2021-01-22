@@ -35,6 +35,8 @@ public:
 	float normR;
 	float vector;
 
+	bool jumping = false;
+
 	//Forces
 	fPoint gravityForce;
 	fPoint aerodinamicForce;
@@ -47,9 +49,7 @@ public:
 public:
 	void Draw() 
 	{
-		/*SDL_Rect rectPlayer;
-		rectPlayer = currentAnim->GetCurrentFrame();
-		app->render->DrawTexture(texture, position.x, position.y, &rectPlayer);*/
+
 	}
 	
 
@@ -78,7 +78,7 @@ class PhysicsEngine
 {
 public:
 	PhysicsEngine() {}
-	Body* player = new Body(100.0f, 185.0f,60,16,16);
+	Body* player = new Body(100.0f, 188.0f,60,16,16);
 	Body* world = new Body(250, 25000.0f, 900000000000.0f,1000.0f, 1000.0f); //490.0f, 8500.0f, 100000000000.0f,300.0f, 300.0f
 	
 
@@ -90,7 +90,6 @@ public:
 		player->vector = PIXEL_TO_METERS((world->position.x - player->position.x));
 		player->gravityForce.x = G * ((player->mass * world->mass) / player->normR) * player->vector;
 		player->gravityForce.y = G * ((player->mass * world->mass) / player->normR) * PIXEL_TO_METERS((world->center.y - player->center.y));
-		
 	}
 	void Aerodeynamics()
 	{
@@ -109,7 +108,6 @@ public:
 		player->df.x = player->gravityForce.x + player->aerodinamicForce.x  + player->hydrodinamicForce.x + player->normalForce.x;
 		player->df.y = player->gravityForce.y + player->aerodinamicForce.y  + player->hydrodinamicForce.y + player->normalForce.y;
 		player->acceleration = { player->df.x / player->mass, player->df.y / player->mass };
-
 	}
 	void Integrator(float dt)
 	{
@@ -123,6 +121,11 @@ public:
 	{
 		if (momentum.x != 0) player->velocity.x = momentum.x / player->mass;
 		if (momentum.y != 0) player->velocity.y = momentum.y / player->mass;
+	}
+	void AddForce(fPoint force)
+	{
+		if (force.x != 0) player->acceleration.x = force.x / player->mass;
+		if (force.y != 0) player->acceleration.y = force.y / player->mass;
 	}
 	float norm(fPoint p0, fPoint p1)
 	{
