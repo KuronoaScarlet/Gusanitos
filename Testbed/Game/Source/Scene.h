@@ -15,7 +15,7 @@ public:
 		position = {posx, posy};
 		mass = m;
 		size = { w,h };
-		center = { w / 2, h / 2 };
+		center = { posx + (w / 2), posy + (h / 2) };
 
 	}
 	~Body(){}
@@ -30,7 +30,13 @@ public:
 	float mass;
 	SDL_Texture* texture;
 	Animation* currentAnim = nullptr;
-	fPoint gravity;
+
+	//Forces
+	fPoint gravityForce;
+	fPoint aerodinamicForce;
+	fPoint hydrodinamicForce;
+	fPoint normalForce;
+	fPoint df;
 
 public:
 	void Draw() 
@@ -54,17 +60,25 @@ class PhysicsEngine
 {
 public:
 	PhysicsEngine() {}
-	Body* player = new Body(20.0f,20.0f,60,30,30);
-	Body* world = new Body(0, 200, 5000000,30000,30000);
+	Body* player = new Body(200.0f, 0.0f,60,16,16);
+	Body* world = new Body(490.0f, 8000.0f, 100000000.0f,300.0f, 300.0f);
 	
 
 public:
 	void ForceGrav()
 	{
-		player->gravity.x = G * ((player->mass * world->mass) / (pow(norm(world->center, player->center), 2))) * (world->center.x - player->center.x);
-		player->gravity.y = G * ((player->mass * world->mass) / (pow(norm(world->center, player->center), 2))) * (world->center.y - player->center.y);
+		player->gravityForce.x = G * ((player->mass * world->mass) / PIXEL_TO_METERS((pow(norm(world->center, player->center), 2)))) * PIXEL_TO_METERS((world->center.x - player->center.x));
+		player->gravityForce.y = G * ((player->mass * world->mass) / PIXEL_TO_METERS((pow(norm(world->center, player->center), 2)))) * PIXEL_TO_METERS((world->center.y - player->center.y));
 		
 	}
+	void Acceleration()
+	{
+		player->df.x = player->gravityForce.x + player->aerodinamicForce.x  + player->hydrodinamicForce.x + player->normalForce.x;
+		player->df.y = player->gravityForce.y + player->aerodinamicForce.y  + player->hydrodinamicForce.y + player->normalForce.y;
+		player->acceleration = { player->df.x / player->mass, player->df.y / player->mass };
+
+	}
+
 	float norm(fPoint p0, fPoint p1)
 	{
 		fPoint v{ (p0.x - p1.x),(p0.y - p1.y) };

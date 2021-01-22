@@ -57,14 +57,24 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	if (integrator.player->position.y <= 186)
+	if (integrator.player->position.y <= 320.0f)
 	{
 		integrator.player->currentAnim = &idleAnimation;
 
 
 		integrator.ForceGrav();
 
-		integrator.player->position.y += integrator.player->gravity.y;
+		//Sumar las fuerzas
+		//Sacar la acceleracion
+		//igualar la posicion a la acceleracion
+		//tuput amadre
+		integrator.Acceleration();
+		
+		integrator.player->position.x += integrator.player->acceleration.x ;
+		integrator.player->position.y += integrator.player->acceleration.y;
+
+		integrator.player->center.x += integrator.player->acceleration.x;
+		integrator.player->center.y += integrator.player->acceleration.y;
 
 
 	}
@@ -80,6 +90,8 @@ bool Scene::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	ret = false;
 	
+	integrator.player->Draw();
+
 	integrator.player->Draw();
 	
 
