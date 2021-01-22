@@ -46,6 +46,9 @@ public:
 
 	Collider* collider = nullptr;
 
+	//Animation
+	Animation idleAnimation;
+
 public:
 	void Draw() 
 	{
@@ -78,7 +81,7 @@ class PhysicsEngine
 {
 public:
 	PhysicsEngine() {}
-	Body* player = new Body(100.0f, 188.0f,60,16,16);
+	Body* player = new Body(100.0f, 100.0f,60,16,16);
 	Body* world = new Body(250, 25000.0f, 900000000000.0f,1000.0f, 1000.0f); //490.0f, 8500.0f, 100000000000.0f,300.0f, 300.0f
 	
 
@@ -171,7 +174,9 @@ public:
 private:
 	
 	PhysicsEngine integrator;
-	Animation idleAnimation;
+
+	SDL_Texture* bckground;
+	
 
 	bool collision = false;
 };
