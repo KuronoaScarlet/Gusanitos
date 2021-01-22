@@ -15,7 +15,7 @@ public:
 		position = {posx, posy};
 		mass = m;
 		size = { w,h };
-		center = { posx + (w / 2), posy + (h / 2) };
+		center = { (w / 2), (h / 2) };
 
 	}
 	~Body(){}
@@ -31,6 +31,10 @@ public:
 	SDL_Texture* texture;
 	Animation* currentAnim = nullptr;
 
+	float Norm;
+	float normR;
+	float vector;
+
 	//Forces
 	fPoint gravityForce;
 	fPoint aerodinamicForce;
@@ -38,37 +42,66 @@ public:
 	fPoint normalForce;
 	fPoint df;
 
+	Collider* collider = nullptr;
+
 public:
 	void Draw() 
 	{
-		SDL_Rect rectPlayer;
+		/*SDL_Rect rectPlayer;
 		rectPlayer = currentAnim->GetCurrentFrame();
-		app->render->DrawTexture(texture, position.x, position.y, &rectPlayer);
+		app->render->DrawTexture(texture, position.x, position.y, &rectPlayer);*/
 	}
-	void AddForce(fPoint df)
-	{
-		force += df;
-	}
-	void AddMomentum(fPoint dv)
-	{
-		velocity += dv;
-	}
+	
 
 };
+class Fluid
+{
+public:
+	Fluid()
+	{
 
+	}
+	~Fluid() {}	
+	fPoint position;
+	fPoint size;
+	float volumeDisplaced;
+
+	SDL_Texture* texture;
+
+public:
+	void Draw() 
+	{
+
+	}
+};
 class PhysicsEngine
 {
 public:
 	PhysicsEngine() {}
-	Body* player = new Body(200.0f, 0.0f,60,16,16);
-	Body* world = new Body(490.0f, 8000.0f, 100000000.0f,300.0f, 300.0f);
+	Body* player = new Body(100.0f, 185.0f,60,16,16);
+	Body* world = new Body(200, 200000.0f, 900000000000.0f,1000.0f, 1000.0f); //490.0f, 8500.0f, 100000000000.0f,300.0f, 300.0f
 	
 
 public:
 	void ForceGrav()
 	{
-		player->gravityForce.x = G * ((player->mass * world->mass) / PIXEL_TO_METERS((pow(norm(world->center, player->center), 2)))) * PIXEL_TO_METERS((world->center.x - player->center.x));
-		player->gravityForce.y = G * ((player->mass * world->mass) / PIXEL_TO_METERS((pow(norm(world->center, player->center), 2)))) * PIXEL_TO_METERS((world->center.y - player->center.y));
+		player->Norm = PIXEL_TO_METERS(norm(world->position, player->center));
+		player->normR = (pow(player->Norm, 2));
+		player->vector = PIXEL_TO_METERS((world->position.x - player->position.x));
+		player->gravityForce.x = G * ((player->mass * world->mass) / player->normR) * player->vector;
+		player->gravityForce.y = G * ((player->mass * world->mass) / player->normR) * PIXEL_TO_METERS((world->center.y - player->center.y));
+		
+	}
+	void Aerodeynamics()
+	{
+		
+	}
+	void Bouyancy()
+	{
+		//player->hydrodinamicForce.x = 
+	}
+	void Springs()
+	{
 		
 	}
 	void Acceleration()
@@ -78,10 +111,20 @@ public:
 		player->acceleration = { player->df.x / player->mass, player->df.y / player->mass };
 
 	}
+	void Integrator(float dt)
+	{
+		player->position.x += player->velocity.x * dt + 0.5f * (player->acceleration.x * dt * dt);
+		player->position.y += player->velocity.y * dt + 0.5f * (player->acceleration.y * dt * dt);
+
+		player->velocity.x += player->acceleration.x * dt;
+		player->velocity.y += player->acceleration.y * dt;
+	}
 
 	float norm(fPoint p0, fPoint p1)
 	{
-		fPoint v{ (p0.x - p1.x),(p0.y - p1.y) };
+		fPoint v;
+		v.x = p0.x - p1.x;
+		v.y	= p0.y - p1.y;
 		return (float(sqrt((v.x * v.x) + (v.y * v.y))));
 	}
 };
@@ -113,13 +156,17 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-		bool firstEntry = true;
+	void OnCollision(Collider* a, Collider* b);
+
+	bool firstEntry = true;
 
 
 private:
 	
 	PhysicsEngine integrator;
 	Animation idleAnimation;
+
+	bool collision = false;
 };
 
 

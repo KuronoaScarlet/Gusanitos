@@ -42,6 +42,9 @@ public:
 
 	bool matrix[Collider::Type::MAX][Collider::Type::MAX];
 
+	// Simple debugging flag to draw all colliders
+	bool debug = false;
+
 private:
 	// All existing colliders in the scene
 	Collider* colliders[MAX_COLLIDERS] = { nullptr };
@@ -50,8 +53,7 @@ private:
 	// If set two false, collider 1 will ignore collider 2
 
 
-	// Simple debugging flag to draw all colliders
-	bool debug = false;
+	
 };
 
 #endif // __COLLISIONS_H__
