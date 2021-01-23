@@ -38,15 +38,20 @@ bool Scene::Start()
 	bckground = app->tex->Load("Assets/Textures/background.png");
 
 	app->entityManager->Start();
-	app->entityManager->AddEntity({100.0f,100.0f}, 60.0f, 22.0f, 25.0f, Body::Type::PLAYER);
+	app->entityManager->AddEntity({50.0f,100.0f}, 60.0f, 22.0f, 25.0f, Body::Type::PLAYER);
 
+	waterBckGrnd = app->tex->Load("Assets/Textures/water.png");
 	app->collisions->active = true;
 
-	app->collisions->AddCollider({ 0,0,900,174 }, Collider::Type::AIR, this);
+	app->collisions->AddCollider({ 0,0,2000,174 }, Collider::Type::AIR, this);
 
-	app->collisions->AddCollider({ 100,200,900,50 }, Collider::Type::FLOOR, this);
+	app->collisions->AddCollider({ 0,200,183,50 }, Collider::Type::FLOOR, this);
+	app->collisions->AddCollider({ 337,200,1800,50 }, Collider::Type::FLOOR, this);
 
-	app->collisions->AddCollider({ 0,200,100,500 }, Collider::Type::WATER, this);
+	app->collisions->AddCollider({ 183,200,154,500 }, Collider::Type::WATER, this);
+
+	app->collisions->AddCollider({ 509,-15,5,259 }, Collider::Type::LEVEL2, this);
+	app->collisions->AddCollider({ 974,-17,5,259 }, Collider::Type::LEVEL3, this);
 
 	return true;
 }
@@ -60,6 +65,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	if (app->entityManager->entityList.At(0)->data->position.x > 100.0f && app->entityManager->entityList.At(0)->data->position.x < 1620.0f) app->render->camera.x = -(app->entityManager->entityList.At(0)->data->position.x * 3) +300;
 	return true;
 }
 
@@ -74,6 +80,7 @@ bool Scene::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) app->collisions->debug = !app->collisions->debug;
 	
 	app->render->DrawTexture(bckground, 0, -40, NULL);
+	app->render->DrawTexture(waterBckGrnd, 183, 200, NULL);
 
 	return ret;
 }

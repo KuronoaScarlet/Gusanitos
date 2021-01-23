@@ -37,6 +37,7 @@ public:
 
 	bool firstEntry = true;
 
+	SDL_Texture* waterBckGrnd;
 
 private:
 

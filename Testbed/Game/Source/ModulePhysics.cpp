@@ -46,7 +46,7 @@ void PhysicsEngine::Aerodeynamics(fPoint dirVelo, float surface, float cd, float
 void PhysicsEngine::Bouyancy(fPoint position, float mass, float volume)
 {
 	hydrodinamicForce.x = 0;
-	hydrodinamicForce.y = WATER_DENSITY * gravityForce.y * volume ;
+	hydrodinamicForce.y = (WATER_DENSITY * gravityForce.y * volume - mass * gravityForce.y)/150;
 }
 
 fPoint PhysicsEngine::Integrator(float dt, fPoint* position, fPoint* velocity, fPoint* acceleration)
@@ -67,10 +67,10 @@ fPoint PhysicsEngine::AddMomentum(fPoint momentum, float mass, fPoint velocity)
 	if (momentum.x != 0) vel.x = momentum.x / mass;
 	if (momentum.y != 0) vel.y = momentum.y / mass;
 
-	velocity.x = velocity.x + vel.x;
-	velocity.y = velocity.y + vel.y;
+	/*velocity.x = velocity.x + vel.x;
+	velocity.y = velocity.y + vel.y;*/
 
-	return velocity;
+	return vel;
 }
 
 void PhysicsEngine::AddForce(fPoint force)

@@ -16,6 +16,8 @@ struct Collider
 		PLAYER,
 		WATER,
 		AIR,
+		LEVEL2,
+		LEVEL3,
 
 		MAX
 	};

@@ -31,6 +31,8 @@ private:
 	Animation* currentAnimation;
 
 	SDL_Texture* tex;
+
+	bool isJumping;
 };
 
 

@@ -8,6 +8,7 @@
 #include "Audio.h"
 #include "EntityManager.h"
 #include "ModulePhysics.h"
+#include "Scene.h"
 
 Player::Player(Module* listener, fPoint position, float mass, float weight, float height, SDL_Texture* texture, Type type) : Body(listener, position, mass, weight, height, texture, type)
 {
@@ -96,6 +97,15 @@ Player::Player(Module* listener, fPoint position, float mass, float weight, floa
 	volume = 0;
 	inWater = false;
 
+	/**/
+	
+	dirVelo = { 0.0f,0 };
+	surface = 0;
+	cd = 0;
+	velRelative = 0;
+	volume = 0;
+	inWater = false;
+	isJumping = false;
 }
 
 bool Player::Start()
@@ -105,16 +115,24 @@ bool Player::Start()
 
 bool Player::Update(float dt)
 {
-	/*if (app->input->GetKey(SDL_SCANCODE_A))
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ -5,0 }, mass, velocity).x;
-		velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ -5,0 }, mass, velocity).y;
+		currentAnimation = &leftAnimation;
+		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ -5000,0 }, mass, velocity).x;
+		//velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ -5,0 }, mass, velocity).y;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D))
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ 5,0 }, mass, velocity).x;
-		velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ 5,0 }, mass, velocity).y;
-	}*/
+		currentAnimation = &rightAnimation;
+		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ 5000,0 }, mass, velocity).x;
+		//velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ 5,0 }, mass, velocity).y;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && isJumping == false)
+	{
+		currentAnimation = &rightAnimation;
+		velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ 0,-4000 }, mass, velocity).y;
+		isJumping = true;
+	}
 
 	/////////////////////////////////////////PHYSICS LOGIC/////////////////////////////////////////
 	acceleration.x = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative, volume, inWater).x;
@@ -123,13 +141,13 @@ bool Player::Update(float dt)
 	position.x = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).x;
 	position.y = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).y;
 	
-	volume = (position.y + collider->rect.h) - 200;
+	volume = PIXELS_TO_METERS((position.y + collider->rect.h) - 200);
 
 	if (volume <= 0)
 	{
 		inWater = false;
 	}
-
+	velocity.x = 0;
 	collider->SetPos(position.x, position.y);
 	currentAnimation->Update();
 
@@ -141,6 +159,8 @@ bool Player::Draw()
 	SDL_Rect playerRect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(texture, position.x, position.y, &playerRect);
 
+	app->render->DrawTexture(app->scene->waterBckGrnd, 183, 200, NULL);
+
 	return true;
 }
 
@@ -150,19 +170,38 @@ void Player::Collision(Collider* coll)
 	{
 		velocity = { velocity.x , 0 };
 		app->entityManager->integrator->normalForce.y = -app->entityManager->integrator->gravityForce.y;
+		isJumping = false;
 
 		//position.y = coll->rect.y - coll->rect.h + 25;
 	}
 	if (coll->type == Collider::Type::WATER)
 	{
 		inWater = true;
-		volume = (position.y + collider->rect.h) - coll->rect.y;
+		//volume = (position.y + collider->rect.h) - coll->rect.y;
 	}
 	if (coll->type == Collider::Type::AIR)
 	{
 		inWater = false;
 		app->entityManager->integrator->normalForce.x = 0;
 		app->entityManager->integrator->normalForce.y = 0;
+	}
+	if (coll->type == Collider::Type::LEVEL2)
+	{
+		dirVelo = { -1.0f,0 };
+		surface = 20;
+		cd = 20;
+		velRelative = 20;
+		volume = 0;
+		inWater = false;
+	}
+	if (coll->type == Collider::Type::LEVEL3)
+	{
+		dirVelo = { 0, 1.0 };
+		surface = 19;
+		cd = 4;
+		velRelative = 10;
+		volume = 0;
+		inWater = false;
 	}
 
 }
