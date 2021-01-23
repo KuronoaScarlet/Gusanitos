@@ -97,11 +97,6 @@ bool Player::Start()
 
 bool Player::Update(float dt)
 {
-
-
-
-
-	/////////////////////////////////////////PHYSICS LOGIC/////////////////////////////////////////
 	acceleration.x = app->entityManager->integrator->IntegratePhysics(position, mass, center).x;
 	acceleration.y = app->entityManager->integrator->IntegratePhysics(position, mass, center).y;
 
