@@ -19,11 +19,17 @@ fPoint PhysicsEngine::IntegratePhysics(fPoint position, float mass, fPoint massC
 
 void PhysicsEngine::ForceGrav(fPoint position, float mass, fPoint massCentre)
 {
-	norm = Normalize(world->position, massCentre);
-	normR = (pow(norm, 2));
+	// Cálculo de la fuerza gravitatoria de nuestro mundo. El reescalado de las unidades hace que la fuerza G dentro del juego sea 8 veces la real, pero funciona correctamente.
+	radius = world->centre.x;
+	sqRadius = (pow((radius), 2));
 	gravityForce.x = 0;
-	gravityForce.y = G * (( world->mass) / normR) * (world->centre.y - massCentre.y);
-	//4.05*10^13
+	gravityForce.y = G * (world->mass / sqRadius);
+}
+fPoint PhysicsEngine::Acceleration(float mass)
+{
+	df.x = -230 + aerodinamicForce.x + hydrodinamicForce.x + normalForce.x;
+	df.y = gravityForce.y + aerodinamicForce.y + hydrodinamicForce.y + normalForce.y;
+	return { df.x / mass, df.y / mass };
 }
 void PhysicsEngine::Aerodeynamics(fPoint dirVelo, float surface, float cd, float velRelative)
 {
@@ -34,14 +40,8 @@ void PhysicsEngine::Aerodeynamics(fPoint dirVelo, float surface, float cd, float
 	}
 	float moduleAF;
 	moduleAF = 0.5 * AIR_DENSITY * pow(velRelative, 2) * surface * cd;
-	aerodinamicForce.x = -moduleAF * dirVelo.x;
+	aerodinamicForce.x = moduleAF * dirVelo.x;
 	aerodinamicForce.y = -moduleAF * dirVelo.y;
-}
-fPoint PhysicsEngine::Acceleration(float mass)
-{
-	df.x = gravityForce.x + aerodinamicForce.x + hydrodinamicForce.x + normalForce.x;
-	df.y = gravityForce.y + aerodinamicForce.y + hydrodinamicForce.y + normalForce.y;
-	return { df.x / mass, df.y / mass };
 }
 void PhysicsEngine::Bouyancy(fPoint position, float mass, float volume)
 {

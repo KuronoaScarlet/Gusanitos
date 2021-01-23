@@ -40,9 +40,8 @@ private:
 
 	float Normalize(fPoint p0, fPoint p1);
 
-	float norm;
-	float normR;
-	float vector;
+	float radius;
+	float sqRadius;
 
 public:
 	class World 
@@ -54,23 +53,23 @@ public:
 			position.x = pos.x;
 			position.y = pos.y;
 			mass = m;
-			weight = w;
+			width = w;
 			height = h;
-			size = { weight, height };
+			size = { position.x + width, position.y + height };
 			centre = { size.x / 2, size.y / 2 };
 		}
 		~World() {}
 
 		fPoint position;
 
-		float weight;
+		float width;
 		float height;
 		float mass;
 		fPoint size;
 		fPoint centre;
 	};
 
-	World* world = new World({ 250.0f, 63000000.0f }, (5.94 * pow(10,24)), 6300.0f, 6300.0f);
+	World* world = new World({ 250.0f, 200.0f }, (5.94 * pow(10,24)), 12742000.0f, 12742000.0f);
 };
 
 #endif

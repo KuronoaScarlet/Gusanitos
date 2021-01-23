@@ -89,10 +89,10 @@ Player::Player(Module* listener, fPoint position, float mass, float weight, floa
 
 	collider = collider = app->collisions->AddCollider(SDL_Rect{ (int)position.x,(int)position.y, 22, 25 }, Collider::Type::PLAYER, listener);
 
-	dirVelo = { 0,0 };
-	surface = 0;
-	cd = 0;
-	velRelative = 0;
+	dirVelo = { 1.0f,0 };
+	surface = 1;
+	cd = 1;
+	velRelative = 20;
 	volume = 0;
 	inWater = false;
 
@@ -148,8 +148,7 @@ void Player::Collision(Collider* coll)
 {
 	if (coll->type == Collider::Type::FLOOR)
 	{
-		velocity = { 0,0 };
-		app->entityManager->integrator->normalForce.x = -app->entityManager->integrator->gravityForce.x;
+		velocity = { velocity.x , 0 };
 		app->entityManager->integrator->normalForce.y = -app->entityManager->integrator->gravityForce.y;
 
 		//position.y = coll->rect.y - coll->rect.h + 25;
