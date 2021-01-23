@@ -12,6 +12,7 @@ Collisions::Collisions(bool startEnabled) : Module()
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::FLOOR] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::WATER] = true;
+	matrix[Collider::Type::PLAYER][Collider::Type::AIR] = true;
 
 	matrix[Collider::Type::FLOOR][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::FLOOR][Collider::Type::FLOOR] = false;
@@ -160,6 +161,9 @@ void Collisions::DebugDraw()
 			break;
 		case Collider::Type::WATER:
 			app->render->DrawRectangle(colliders[i]->rect, 20, 25, 100, alpha);
+			break;
+		case Collider::Type::AIR:
+			app->render->DrawRectangle(colliders[i]->rect, 250, 25, 5, alpha);
 			break;
 		}
 	}

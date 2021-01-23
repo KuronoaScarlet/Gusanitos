@@ -14,7 +14,7 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
-#define G 6.6*pow(10,-4)
+#define G 6.6*pow(10,-11)
 #define AIR_DENSITY 1.225
 #define WATER_DENSITY 1
 
@@ -22,7 +22,7 @@
 #define METER_PER_PIXEL 0.02f // this is 1 / PIXELS_PER_METER !
 
 #define METERS_TO_PIXELS(m) ((float) floor(PIXELS_PER_METER * m))
-#define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
+#define PIXELS_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
 
 // Deletes a buffer

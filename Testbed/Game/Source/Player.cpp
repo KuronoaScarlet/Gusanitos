@@ -105,7 +105,7 @@ bool Player::Start()
 
 bool Player::Update(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_A))
+	/*if (app->input->GetKey(SDL_SCANCODE_A))
 	{
 		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ -5,0 }, mass, velocity).x;
 		velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ -5,0 }, mass, velocity).y;
@@ -114,9 +114,7 @@ bool Player::Update(float dt)
 	{
 		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ 5,0 }, mass, velocity).x;
 		velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ 5,0 }, mass, velocity).y;
-	}
-
-
+	}*/
 
 	/////////////////////////////////////////PHYSICS LOGIC/////////////////////////////////////////
 	acceleration.x = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative, volume, inWater).x;
@@ -124,8 +122,13 @@ bool Player::Update(float dt)
 
 	position.x = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).x;
 	position.y = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).y;
+	
+	volume = (position.y + collider->rect.h) - 200;
 
-	if (volume <= 0) inWater = false;
+	if (volume <= 0)
+	{
+		inWater = false;
+	}
 
 	collider->SetPos(position.x, position.y);
 	currentAnimation->Update();
@@ -149,13 +152,20 @@ void Player::Collision(Collider* coll)
 		app->entityManager->integrator->normalForce.x = -app->entityManager->integrator->gravityForce.x;
 		app->entityManager->integrator->normalForce.y = -app->entityManager->integrator->gravityForce.y;
 
-		position.y = coll->rect.y - coll->rect.h + 25;
+		//position.y = coll->rect.y - coll->rect.h + 25;
 	}
 	if (coll->type == Collider::Type::WATER)
 	{
 		inWater = true;
-		volume = (position.y + collider->rect.h) - 200;
+		volume = (position.y + collider->rect.h) - coll->rect.y;
 	}
+	if (coll->type == Collider::Type::AIR)
+	{
+		inWater = false;
+		app->entityManager->integrator->normalForce.x = 0;
+		app->entityManager->integrator->normalForce.y = 0;
+	}
+
 }
 
 void Player::CleanUp()

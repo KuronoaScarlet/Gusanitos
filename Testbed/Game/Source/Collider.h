@@ -15,6 +15,7 @@ struct Collider
 		FLOOR,
 		PLAYER,
 		WATER,
+		AIR,
 
 		MAX
 	};

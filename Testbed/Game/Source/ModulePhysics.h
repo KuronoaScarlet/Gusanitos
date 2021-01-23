@@ -70,7 +70,7 @@ public:
 		fPoint centre;
 	};
 
-	World* world = new World({ 250.0f, 25000.0f }, 600000000.0f, 1000.0f, 1000.0f);
+	World* world = new World({ 250.0f, 63000000.0f }, (5.94f * pow(10,24)), 6300.0f, 6300.0f);
 };
 
 #endif
