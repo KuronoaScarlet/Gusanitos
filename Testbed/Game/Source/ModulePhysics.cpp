@@ -21,9 +21,9 @@ void PhysicsEngine::ForceGrav(fPoint position, float mass, fPoint massCentre)
 {
 	norm = Normalize(world->position, massCentre);
 	normR = (pow(norm, 2));
-	vector = (world->position.x - position.x);
-	gravityForce.x = G * ((mass * world->mass) / normR) * vector;
-	gravityForce.y = G * ((mass * world->mass) / normR) * (world->centre.y - massCentre.y);
+	gravityForce.x = 0;
+	gravityForce.y = G * (( world->mass) / normR) * (world->centre.y - massCentre.y);
+	//4.05*10^13
 }
 void PhysicsEngine::Aerodeynamics(fPoint dirVelo, float surface, float cd, float velRelative)
 {
@@ -45,8 +45,8 @@ fPoint PhysicsEngine::Acceleration(float mass)
 }
 void PhysicsEngine::Bouyancy(fPoint position, float mass, float volume)
 {
-	//hydrodinamicForce.x = WATER_DENSITY * gravityForce.x * volume - mass * gravityForce.x;
-	hydrodinamicForce.y = WATER_DENSITY * gravityForce.y/13 * volume - mass * gravityForce.y/13;
+	hydrodinamicForce.x = 0;
+	hydrodinamicForce.y = WATER_DENSITY * gravityForce.y * volume ;
 }
 
 fPoint PhysicsEngine::Integrator(float dt, fPoint* position, fPoint* velocity, fPoint* acceleration)

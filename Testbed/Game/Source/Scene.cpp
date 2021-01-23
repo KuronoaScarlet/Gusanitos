@@ -38,7 +38,7 @@ bool Scene::Start()
 	bckground = app->tex->Load("Assets/Textures/background.png");
 
 	app->entityManager->Start();
-	app->entityManager->AddEntity({0.0f,205.0f}, 60.0f, 22.0f, 25.0f, Body::Type::PLAYER);
+	app->entityManager->AddEntity({100.0f,100.0f}, 60.0f, 22.0f, 25.0f, Body::Type::PLAYER);
 
 	app->collisions->active = true;
 
