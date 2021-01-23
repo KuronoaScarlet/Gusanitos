@@ -66,6 +66,8 @@ public:
 	float velRelative;
 	float volume;
 
+	bool inWater;
+
 	SDL_Texture* texture;
 
 	Collider* collider = nullptr;

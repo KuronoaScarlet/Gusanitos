@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include "App.h"
+#include"Input.h"
 #include "Render.h"
 #include "Collisions.h"
 #include "Collider.h"
@@ -88,11 +89,12 @@ Player::Player(Module* listener, fPoint position, float mass, float weight, floa
 
 	collider = collider = app->collisions->AddCollider(SDL_Rect{ (int)position.x,(int)position.y, 22, 25 }, Collider::Type::PLAYER, listener);
 
-	dirVelo = { -1,0 };
-	surface = 20;
-	cd = 20;
-	velRelative = 2;
+	dirVelo = { 0,0 };
+	surface = 0;
+	cd = 0;
+	velRelative = 0;
 	volume = 0;
+	inWater = false;
 
 }
 
@@ -103,16 +105,27 @@ bool Player::Start()
 
 bool Player::Update(float dt)
 {
-
+	if (app->input->GetKey(SDL_SCANCODE_A))
+	{
+		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ -5,0 }, mass, velocity).x;
+		velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ -5,0 }, mass, velocity).y;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_D))
+	{
+		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ 5,0 }, mass, velocity).x;
+		velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ 5,0 }, mass, velocity).y;
+	}
 
 
 
 	/////////////////////////////////////////PHYSICS LOGIC/////////////////////////////////////////
-	acceleration.x = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative).x;
-	acceleration.y = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative).y;
+	acceleration.x = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative, volume, inWater).x;
+	acceleration.y = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative, volume, inWater).y;
 
 	position.x = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).x;
 	position.y = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).y;
+
+	if (volume <= 0) inWater = false;
 
 	collider->SetPos(position.x, position.y);
 	currentAnimation->Update();
@@ -137,6 +150,11 @@ void Player::Collision(Collider* coll)
 		app->entityManager->integrator->normalForce.y = -app->entityManager->integrator->gravityForce.y;
 
 		position.y = coll->rect.y - coll->rect.h + 25;
+	}
+	if (coll->type == Collider::Type::WATER)
+	{
+		inWater = true;
+		volume = (position.y + collider->rect.h) - 200;
 	}
 }
 

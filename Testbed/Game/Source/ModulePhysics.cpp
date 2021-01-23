@@ -8,10 +8,11 @@
 
 #include <math.h>
 
-fPoint PhysicsEngine::IntegratePhysics(fPoint position, float mass, fPoint massCentre, fPoint dirVelo, float surface, float cd, float velRelative)
+fPoint PhysicsEngine::IntegratePhysics(fPoint position, float mass, fPoint massCentre, fPoint dirVelo, float surface, float cd, float velRelative, float volume, bool inWater)
 {
 	ForceGrav(position, mass, massCentre);
 	Aerodeynamics(dirVelo, surface, cd, velRelative);
+	if (inWater) Bouyancy(position, mass, volume);
 	return Acceleration(mass);
 }
 
@@ -41,6 +42,11 @@ fPoint PhysicsEngine::Acceleration(float mass)
 	df.y = gravityForce.y + aerodinamicForce.y + hydrodinamicForce.y + normalForce.y;
 	return { df.x / mass, df.y / mass };
 }
+void PhysicsEngine::Bouyancy(fPoint position, float mass, float volume)
+{
+	hydrodinamicForce.x = WATER_DENSITY * gravityForce.x * volume - mass * gravityForce.x;
+	hydrodinamicForce.y = WATER_DENSITY * gravityForce.y * volume - mass * gravityForce.y;
+}
 
 fPoint PhysicsEngine::Integrator(float dt, fPoint* position, fPoint* velocity, fPoint* acceleration)
 {
@@ -53,10 +59,16 @@ fPoint PhysicsEngine::Integrator(float dt, fPoint* position, fPoint* velocity, f
 	return (*position);
 }
 
-void PhysicsEngine::AddMomentum(fPoint momentum)
+fPoint PhysicsEngine::AddMomentum(fPoint momentum, float mass, fPoint velocity)
 {
-	/*if (momentum.x != 0) player->velocity.x = momentum.x / player->mass;
-	if (momentum.y != 0) player->velocity.y = momentum.y / player->mass;*/
+	fPoint vel;
+	if (momentum.x != 0) vel.x = momentum.x / mass;
+	if (momentum.y != 0) vel.y = momentum.y / mass;
+
+	velocity.x = velocity.x + vel.x;
+	velocity.y = velocity.y + vel.y;
+
+	return velocity;
 }
 
 void PhysicsEngine::AddForce(fPoint force)

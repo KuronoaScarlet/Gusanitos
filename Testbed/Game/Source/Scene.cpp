@@ -42,9 +42,9 @@ bool Scene::Start()
 
 	app->collisions->active = true;
 
-	app->collisions->AddCollider({ 0,200,1000,50 }, Collider::Type::FLOOR, this);
+	app->collisions->AddCollider({ 100,200,900,50 }, Collider::Type::FLOOR, this);
 
-	app->collisions->AddCollider({ 0,0,1000,200 }, Collider::Type::AIR, this);
+	app->collisions->AddCollider({ 0,200,100,50 }, Collider::Type::WATER, this);
 
 	return true;
 }
