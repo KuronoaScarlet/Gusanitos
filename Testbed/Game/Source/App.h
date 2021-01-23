@@ -13,7 +13,6 @@ class Render;
 class Textures;
 class Audio;
 class Scene;
-class Player;
 class EntityManager;
 class Collisions;
 
@@ -48,10 +47,6 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-	// Load/Save Requests Methods
-	void LoadGameRequest();
-	void SaveGameRequest() const;
-
 private:
 
 	// Load config file
@@ -72,10 +67,6 @@ private:
 	// Call modules after each loop iteration
 	bool PostUpdate();
 
-	// Load / Save
-	bool LoadGame();
-	bool SaveGame() const;
-
 public:
 
 	// Modules
@@ -86,7 +77,6 @@ public:
 	Audio* audio;
 	Scene* scene;
 	EntityManager* entityManager;
-	Player* player;
 	Collisions* collisions;
 
 	uint activeFonts = 0;
@@ -108,11 +98,6 @@ private:
 	uint frames;
 	float dt;
 
-	mutable bool saveGameRequested;
-	bool loadGameRequested;
-
-	pugi::xml_document saveLoadFile;
-	pugi::xml_node saveLoadNode;
 
 
 

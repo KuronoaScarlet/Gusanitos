@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Player.h"
 #include "Collisions.h"
+#include "EntityManager.h"
 
 
 #include "Defs.h"
@@ -24,8 +25,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
+	entityManager = new EntityManager();
 	scene = new Scene();
-	player = new Player();
 	collisions = new Collisions(false);
 
 	AddModule(input);
@@ -33,7 +34,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(scene);
-	
+	AddModule(entityManager);
 
 	// Render last to swap buffer
 
@@ -41,7 +42,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(render);
 
 	scene->active = true;
-	player->active = true;
 }
 
 App::~App()
@@ -84,12 +84,6 @@ bool App::Awake()
 			ret = item->data->Awake(config.child(item->data->name.GetString()));
 			item = item->next;
 		}
-	}
-
-	pugi::xml_parse_result result = saveLoadFile.load_file("save_game.xml");
-	if (result != NULL)
-	{
-		saveLoadNode = saveLoadFile.child("save");
 	}
 	return ret;
 }
@@ -163,8 +157,7 @@ void App::PrepareUpdate()
 // ---------------------------------------------
 void App::FinishUpdate()
 {
-	if (loadGameRequested == true) LoadGame();
-	if (saveGameRequested == true) SaveGame();
+	
 }
 
 // Call modules before each loop iteration
@@ -275,51 +268,3 @@ const char* App::GetOrganization() const
 	return organization.GetString();
 }
 
-// Load / Save
-void App::LoadGameRequest()
-{
-	loadGameRequested = true;
-}
-
-// ---------------------------------------
-void App::SaveGameRequest() const
-{
-	saveGameRequested = true;
-}
-
-bool App::LoadGame()
-{
-	bool ret = true;
-
-	ListItem<Module*>* item;
-	item = modules.start;
-
-	while (item != NULL && ret == true)
-	{
-		ret = item->data->LoadState(saveLoadNode.child(item->data->name.GetString()));
-		item = item->next;
-	}
-
-	loadGameRequested = false;
-
-	return ret;
-}
-
-bool App::SaveGame() const
-{
-	bool ret = true;
-
-	ListItem<Module*>* item;
-	item = modules.start;
-
-	while (item != NULL && ret == true)
-	{
-		ret = item->data->SaveState(saveLoadNode.child(item->data->name.GetString()));
-		item = item->next;
-	}
-	saveLoadFile.save_file("save_game.xml");
-
-	saveGameRequested = false;
-
-	return ret;
-}

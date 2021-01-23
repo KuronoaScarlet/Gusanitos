@@ -1,242 +1,135 @@
-#include "App.h"
-#include "Input.h"
-#include "Textures.h"
-#include "Audio.h"
-#include "Render.h"
-#include "Window.h"
 #include "Player.h"
+
+#include "App.h"
+#include "Render.h"
 #include "Collisions.h"
-#include "Scene.h"
+#include "Collider.h"
+#include "Audio.h"
+#include "EntityManager.h"
+#include "ModulePhysics.h"
 
-#include "Defs.h"
-#include "Log.h"
-
-Player::Player() : Module()
+Player::Player(Module* listener, fPoint position, float mass, float weight, float height, SDL_Texture* texture, Type type) : Body(listener, position, mass, weight, height, texture, type)
 {
-	name.Create("player");
-	idleAnim.loop = true;
-	idleAnim.PushBack({ 0, 0, 12, 11 });
+	leftAnimation.loop = true;
+	leftAnimation.PushBack({ 21, 17, 21, 26 });
+	leftAnimation.PushBack({ 20, 75, 22, 26 });
+	leftAnimation.PushBack({ 20, 135, 22, 26 });
+	leftAnimation.PushBack({ 20, 195, 22, 26 });
+	leftAnimation.PushBack({ 20, 256, 22, 25 });
+	leftAnimation.PushBack({ 20, 316, 22, 25 });
+	leftAnimation.PushBack({ 20, 376, 22, 25 });
+	leftAnimation.PushBack({ 20, 436, 22, 25 });
+	leftAnimation.PushBack({ 20, 496, 22, 25 });
+	leftAnimation.PushBack({ 20, 556, 22, 25 });
+	leftAnimation.PushBack({ 20, 616, 22, 25 });
+	leftAnimation.PushBack({ 20, 676, 22, 25 });
+	leftAnimation.PushBack({ 20, 736, 22, 25 });
+	leftAnimation.PushBack({ 20, 796, 22, 25 });
+	leftAnimation.PushBack({ 20, 856, 22, 26 });
+	leftAnimation.PushBack({ 20, 916, 22, 26 });
+	leftAnimation.PushBack({ 20, 976, 22, 25 });
+	leftAnimation.PushBack({ 19, 1037, 23, 25 });
+	leftAnimation.PushBack({ 20, 976, 22, 25 });
+	leftAnimation.PushBack({ 20, 915, 22, 26 });
+	leftAnimation.PushBack({ 20, 855, 22, 26 });
+	leftAnimation.PushBack({ 20, 796, 22, 25 });
+	leftAnimation.PushBack({ 20, 736, 22, 25 });
+	leftAnimation.PushBack({ 20, 676, 22, 25 });
+	leftAnimation.PushBack({ 20, 616, 22, 25 });
+	leftAnimation.PushBack({ 20, 556, 22, 25 });
+	leftAnimation.PushBack({ 20, 496, 22, 25 });
+	leftAnimation.PushBack({ 20, 376, 22, 25 });
+	leftAnimation.PushBack({ 20, 316, 22, 25 });
+	leftAnimation.PushBack({ 20, 256, 22, 25 });
+	leftAnimation.PushBack({ 20, 195, 22, 26 });
+	leftAnimation.PushBack({ 20, 135, 22, 26 });
+	leftAnimation.PushBack({ 20, 75, 22, 26 });
+	leftAnimation.PushBack({ 21, 16, 21, 25 });
+	leftAnimation.speed = 0.1f;
 
-    walkAnimRight.PushBack({ 13,0, 12, 11 });
-	walkAnimRight.PushBack({ 26,0, 12, 11 });
-	walkAnimRight.PushBack({ 39,0, 12, 11 });
-	walkAnimRight.PushBack({ 53,0, 14, 11 });
-	walkAnimRight.loop = true;
-	walkAnimRight.speed = 0.1f;
+	rightAnimation.loop = true;
+	rightAnimation.PushBack({ 61, 17, 21, 26 });
+	rightAnimation.PushBack({ 61, 75, 22, 26 });
+	rightAnimation.PushBack({ 61, 135, 22, 26 });
+	rightAnimation.PushBack({ 61, 195, 22, 26 });
+	rightAnimation.PushBack({ 61, 256, 22, 25 });
+	rightAnimation.PushBack({ 61, 316, 22, 25 });
+	rightAnimation.PushBack({ 61, 376, 22, 25 });
+	rightAnimation.PushBack({ 61, 436, 22, 25 });
+	rightAnimation.PushBack({ 61, 496, 22, 25 });
+	rightAnimation.PushBack({ 61, 556, 22, 25 });
+	rightAnimation.PushBack({ 61, 616, 22, 25 });
+	rightAnimation.PushBack({ 61, 676, 22, 25 });
+	rightAnimation.PushBack({ 61, 736, 22, 25 });
+	rightAnimation.PushBack({ 61, 796, 22, 25 });
+	rightAnimation.PushBack({ 61, 856, 22, 26 });
+	rightAnimation.PushBack({ 61, 916, 22, 26 });
+	rightAnimation.PushBack({ 61, 976, 22, 25 });
+	rightAnimation.PushBack({ 61, 1037, 23, 25 });
+	rightAnimation.PushBack({ 61, 976, 22, 25 });
+	rightAnimation.PushBack({ 61, 915, 22, 26 });
+	rightAnimation.PushBack({ 61, 855, 22, 26 });
+	rightAnimation.PushBack({ 61, 796, 22, 25 });
+	rightAnimation.PushBack({ 61, 736, 22, 25 });
+	rightAnimation.PushBack({ 61, 676, 22, 25 });
+	rightAnimation.PushBack({ 61, 616, 22, 25 });
+	rightAnimation.PushBack({ 61, 556, 22, 25 });
+	rightAnimation.PushBack({ 61, 496, 22, 25 });
+	rightAnimation.PushBack({ 61, 376, 22, 25 });
+	rightAnimation.PushBack({ 61, 316, 22, 25 });
+	rightAnimation.PushBack({ 61, 256, 22, 25 });
+	rightAnimation.PushBack({ 61, 195, 22, 26 });
+	rightAnimation.PushBack({ 61, 135, 22, 26 });
+	rightAnimation.PushBack({ 61, 75, 22, 26 });
+	rightAnimation.PushBack({ 61, 16, 21, 25 });
+	rightAnimation.speed = 0.1f;
 
-	walkAnimLeft.PushBack({ 13,12, 12, 11 });
-	walkAnimLeft.PushBack({ 26,12, 12, 11 });
-	walkAnimLeft.PushBack({ 39,12, 12, 11 });
-	walkAnimLeft.PushBack({ 53,12, 14, 11 });
-	walkAnimLeft.loop = true;
-	walkAnimLeft.speed = 0.1f;
+	currentAnimation = &rightAnimation;
 
-	jumpAnim.PushBack({ 1, 23, 12, 12 });
-	jumpAnim.loop = true;
+	collider = collider = app->collisions->AddCollider(SDL_Rect{ (int)position.x,(int)position.y, 22, 25 }, Collider::Type::PLAYER, listener);
+
 }
 
-// Destructor
-Player::~Player()
-{}
-
-// Called before the first frame
 bool Player::Start()
 {
-	playerData.texture = app->tex->Load("Assets/Textures/player.png");
-	playerData.currentAnim = &idleAnim;
-
-	SDL_Rect colP = { playerData.position.x, playerData.position.y, 12, 11 };
-	collider = app->collisions->AddCollider(colP, Collider::Type::PLAYER, this);
-
-	jumpFx = app->audio->LoadFx("Assets/Audio/FX/jump.wav");
-	doubleJumpFx = app->audio->LoadFx("Assets/Audio/FX/double_jump.wav");
-	checkPointFx = app->audio->LoadFx("Assets/Audio/FX/checkpoint.wav");
-	killingEnemyFx = app->audio->LoadFx("Assets/Audio/FX/enemy_death.wav");
-
-	InitialPos();
 	return true;
 }
 
-// Called before render is available
-bool Player::Awake()
-{
-	LOG("Loading Player");
-	
-	return true;
-}
-
-// Called each loop iteration
-bool Player::PreUpdate()
-{
-	return true;
-}
-
-// Called each loop iteration
 bool Player::Update(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE
-		&& app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE
-		&& app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_IDLE) {
-		playerData.currentAnim = &idleAnim;
-	}
-	if(onGround == false)
-	{
-		playerData.vely += gravity;
-		playerData.position.x += playerData.velx;
-		playerData.position.y += playerData.vely;
-	}
+	acceleration.x = app->entityManager->integrator->IntegratePhysics(position, mass, center).x;
+	acceleration.y = app->entityManager->integrator->IntegratePhysics(position, mass, center).y;
 
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-	{
-		debug = !debug;
-	}
+	position.x = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).x;
+	position.y = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).y;
 
-	if (debug == true)
-	{
-		app->collisions->DebugDraw();
-	}
-
-	//PlayerMovement
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		playerData.position.x -= 1;
-		onGround = false;
-		if (playerData.currentAnim != &walkAnimLeft) {
-			walkAnimLeft.Reset();
-			playerData.currentAnim = &walkAnimLeft;
-		}
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		playerData.position.x += 1;
-		onGround = false;
-		if (playerData.currentAnim != &walkAnimRight) {
-			walkAnimRight.Reset();
-			playerData.currentAnim = &walkAnimRight;
-		}
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		
-		if (doubleJump == true && onGround == false) 
-		{
-			app->audio->PlayFx(doubleJumpFx);
-			playerData.vely = -4.5f;
-			doubleJump = false;
-			if (playerData.currentAnim != &jumpAnim) 
-			{
-				jumpAnim.Reset();
-				playerData.currentAnim = &jumpAnim;
-			}
-		}
-		if (playerJumping == true ) 
-		{
-			app->audio->PlayFx(jumpFx);
-			playerJumping = false;
-			playerData.vely = -5.5f;
-			playerData.position.y += playerData.vely;			
-			doubleJump = true;
-			if (playerData.currentAnim != &jumpAnim)
-			{
-				jumpAnim.Reset();
-				playerData.currentAnim = &jumpAnim;
-			}
-			onGround = false;
-		}
-	}
-	
-	cameraControl = true;
-
-	collider->SetPos(playerData.position.x, playerData.position.y);
-
-	playerData.currentAnim->Update();
+	collider->SetPos(position.x, position.y);
+	currentAnimation->Update();
 
 	return true;
 }
 
-// Called each loop iteration
-bool Player::PostUpdate()
+bool Player::Draw()
 {
-	bool ret = true;
-	SDL_Rect rectPlayer;
-	rectPlayer = playerData.currentAnim->GetCurrentFrame();
-	app->render->DrawTexture(playerData.texture, playerData.position.x, playerData.position.y, &rectPlayer);
-
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
-
-	return ret;
-}
-
-// Called before quitting
-bool Player::CleanUp()
-{
-	LOG("Freeing Player");
-	active = false;
+	SDL_Rect playerRect = currentAnimation->GetCurrentFrame();
+	app->render->DrawTexture(texture, position.x, position.y, &playerRect);
 
 	return true;
 }
 
-bool Player::LoadState(pugi::xml_node& data)
+void Player::Collision(Collider* coll)
 {
-	pugi::xml_node play = data.child("position");
-	playerData.position.x = play.attribute("x").as_int(0);
-	playerData.position.y = play.attribute("y").as_int(0);
-
-	pugi::xml_node level = data.child("level");
-	playerData.currentLevel = level.attribute("l").as_int(0);
-
-	return true;
-}
-
-bool Player::SaveState(pugi::xml_node& data) const
-{
-	pugi::xml_node play = data.child("position");
-	play.attribute("x").set_value(playerData.position.x);
-	play.attribute("y").set_value(playerData.position.y);
-	
-	pugi::xml_node level = data.child("level");
-	if(scene1 == true)
+	if (coll->type == Collider::Type::FLOOR)
 	{
-		level.attribute("l").set_value("1");
-	}
+		velocity = { 0,0 };
+		app->entityManager->integrator->normalForce.x = -app->entityManager->integrator->gravityForce.x;
+		app->entityManager->integrator->normalForce.y = -app->entityManager->integrator->gravityForce.y;
 
-	return true;
-}
-
-bool Player::CheckCollision(int x, int y)
-{
-	iPoint posMapPlayer;
-
-	return false;
-}
-
-void Player::OnCollision(Collider* a, Collider* b) 
-{
-	if (a == collider)
-	{
-		if (b->type == Collider::Type::FLOOR)
-		{
-			onGround = true;
-			playerJumping = true;
-			playerData.position.y -=1;
-			playerData.vely = 0;
-			playerData.position.y = playerData.position.y;
-		}
+		position.y = coll->rect.y - coll->rect.h + 25;
 	}
 }
 
-void Player::InitialPos() 
+void Player::CleanUp()
 {
-	if (scene1 == true && app->scene->firstEntry == true) 
-	{
-		playerData.position.x = 50.0f;
-		playerData.position.y = 260.0f;
-		playerData.vely = 0;
 
-		app->render->camera.x = 0;
-		app->render->camera.y = -playerData.position.y + 50;
-	}
 }

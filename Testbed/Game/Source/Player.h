@@ -1,89 +1,36 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
-#include "Module.h"
+#include "Point.h"
+#include "Entity.h"
 #include "Animation.h"
-
+#include "DynArray.h"
 
 struct SDL_Texture;
 struct Collider;
 
-struct PlayerData
+class Player : Body
 {
 public:
-	fPoint position;
-	SString name;
-	float vely = 0.0f;
-	float velx = 0.0f;
-	SDL_Texture* texture;
-	Animation* currentAnim = nullptr;
+	Player(Module* listener, fPoint position, float mass, float weight, float height, SDL_Texture* texture, Type type);
 
-	int currentLevel = 1;
-};
-
-
-class Player : public Module
-{
-public:
-
-	Player();
-
-	// Destructor
-	virtual ~Player();
-
-	// Called before render is available
-	bool Awake();
-
-	// Called before the first frame
 	bool Start();
 
-	// Called before all Updates
-	bool PreUpdate();
-
-	// Called each loop iteration
 	bool Update(float dt);
 
-	// Called before all Updates
-	bool PostUpdate();
+	bool Draw();
 
-	// Called before quitting
-	bool CleanUp();
+	void Collision(Collider* coll);
 
-	//For saving and loading player position
-	bool LoadState(pugi::xml_node&);
-	bool SaveState(pugi::xml_node&) const;
-
-	// Collision 
-	bool CheckCollision(int x, int y);
-	void OnCollision(Collider* a, Collider* b);
-	void InitialPos();
-
-	bool playerJumping = true;
-	float gravity = 0.2f;
-	bool doubleJump = false;
-	PlayerData playerData;
-	
-	bool scene1;
-
-	bool cameraControl = true;
-
-	Collider* collider;
+	void CleanUp();
 
 private:
+	Animation rightAnimation;
+	Animation leftAnimation;
 
-	SDL_Texture* character;
-	Animation walkAnimRight;
-	Animation walkAnimLeft;
-	Animation jumpAnim;
-	Animation idleAnim;
-	
-	uint jumpFx = 0;
-	uint doubleJumpFx = 0;
-	uint checkPointFx = 0;
-	uint killingEnemyFx = 0;
+	Animation* currentAnimation;
 
-	bool onGround = false;
-	bool debug = false;
+	SDL_Texture* tex;
 };
 
 

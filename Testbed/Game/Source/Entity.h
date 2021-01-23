@@ -7,19 +7,17 @@
 #include "Point.h"
 
 
-class Entity
+class Body
 {
 public:
 	enum class Type
 	{
 		UNKNOWN,
-		GROUND_ENEMY,
-		AIR_ENEMY,
-		HEARTS,
-		COINS
+		PLAYER,
+		GUIDEDMISSILE
 	};
 
-	Entity(Module* listener, fPoint position, SDL_Texture* texture, Type type) : listener(listener), position(position), texture(texture), type(type)
+	Body(Module* listener, fPoint position, float mass, float weight, float height, SDL_Texture* texture, Type type) : listener(listener), position(position), mass(mass), weight(weight), height(height), texture(texture), type(type)
 	{}
 
 	virtual bool Start()
@@ -51,6 +49,18 @@ public:
 
 	Type type;
 	fPoint position;
+
+	float weight;
+	float height;
+	float mass;
+	fPoint size = {weight, height};
+	fPoint center = { size.x / 2, size.y / 2 };
+	fPoint velocity;
+	fPoint acceleration;
+	fPoint force;
+	float directionAngle;
+	float rotationAngle;
+
 	SDL_Texture* texture;
 
 	Collider* collider = nullptr;
