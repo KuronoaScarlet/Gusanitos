@@ -27,7 +27,7 @@ void PhysicsEngine::ForceGrav(fPoint position, float mass, fPoint massCentre)
 }
 fPoint PhysicsEngine::Acceleration(float mass)
 {
-	df.x = -230 + aerodinamicForce.x + hydrodinamicForce.x + normalForce.x;
+	df.x = gravityForce.x + aerodinamicForce.x + hydrodinamicForce.x + normalForce.x;
 	df.y = gravityForce.y + aerodinamicForce.y + hydrodinamicForce.y + normalForce.y;
 	return { df.x / mass, df.y / mass };
 }
