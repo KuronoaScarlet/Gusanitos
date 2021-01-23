@@ -12,7 +12,7 @@ public:
 	PhysicsEngine() {}
 	~PhysicsEngine() {}
 
-	fPoint IntegratePhysics(fPoint position, float mass, fPoint massCentre);
+	fPoint IntegratePhysics(fPoint position, float mass, fPoint massCentre, fPoint dirVelo, float surface, float cd, float velRelative);
 
 	void AddMomentum(fPoint momentum);
 
@@ -30,7 +30,7 @@ public:
 private:
 	void ForceGrav(fPoint position, float mass, fPoint massCentre);
 
-	void Aerodeynamics();
+	void Aerodeynamics(fPoint dirVelo, float surface, float cd, float velRelative);
 
 	void Bouyancy();
 

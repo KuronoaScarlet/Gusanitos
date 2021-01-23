@@ -8,9 +8,10 @@
 
 #include <math.h>
 
-fPoint PhysicsEngine::IntegratePhysics(fPoint position, float mass, fPoint massCentre)
+fPoint PhysicsEngine::IntegratePhysics(fPoint position, float mass, fPoint massCentre, fPoint dirVelo, float surface, float cd, float velRelative)
 {
 	ForceGrav(position, mass, massCentre);
+	Aerodeynamics(dirVelo, surface, cd, velRelative);
 	return Acceleration(mass);
 }
 
@@ -22,7 +23,18 @@ void PhysicsEngine::ForceGrav(fPoint position, float mass, fPoint massCentre)
 	gravityForce.x = G * ((mass * world->mass) / normR) * vector;
 	gravityForce.y = G * ((mass * world->mass) / normR) * PIXEL_TO_METERS((world->centre.y - massCentre.y));
 }
-
+void PhysicsEngine::Aerodeynamics(fPoint dirVelo, float surface, float cd, float velRelative)
+{
+	if (dirVelo != fPoint{ 0,0 })
+	{
+		dirVelo.x = dirVelo.x / (sqrt((dirVelo.x * dirVelo.x) + (dirVelo.y * dirVelo.y)));
+		dirVelo.y = dirVelo.y / (sqrt((dirVelo.x * dirVelo.x) + (dirVelo.y * dirVelo.y)));
+	}
+	float moduleAF;
+	moduleAF = 0.5 * AIR_DENSITY * pow(velRelative, 2) * surface * cd;
+	aerodinamicForce.x = -moduleAF * dirVelo.x;
+	aerodinamicForce.y = -moduleAF * dirVelo.y;
+}
 fPoint PhysicsEngine::Acceleration(float mass)
 {
 	df.x = gravityForce.x + aerodinamicForce.x + hydrodinamicForce.x + normalForce.x;

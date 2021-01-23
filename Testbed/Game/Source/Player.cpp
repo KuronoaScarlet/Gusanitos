@@ -88,6 +88,12 @@ Player::Player(Module* listener, fPoint position, float mass, float weight, floa
 
 	collider = collider = app->collisions->AddCollider(SDL_Rect{ (int)position.x,(int)position.y, 22, 25 }, Collider::Type::PLAYER, listener);
 
+	dirVelo = { -1,0 };
+	surface = 20;
+	cd = 20;
+	velRelative = 2;
+	volume = 0;
+
 }
 
 bool Player::Start()
@@ -102,8 +108,8 @@ bool Player::Update(float dt)
 
 
 	/////////////////////////////////////////PHYSICS LOGIC/////////////////////////////////////////
-	acceleration.x = app->entityManager->integrator->IntegratePhysics(position, mass, center).x;
-	acceleration.y = app->entityManager->integrator->IntegratePhysics(position, mass, center).y;
+	acceleration.x = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative).x;
+	acceleration.y = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative).y;
 
 	position.x = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).x;
 	position.y = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).y;

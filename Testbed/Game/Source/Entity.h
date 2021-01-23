@@ -60,6 +60,11 @@ public:
 	fPoint force;
 	float directionAngle;
 	float rotationAngle;
+	fPoint dirVelo;
+	float surface;
+	float cd;
+	float velRelative;
+	float volume;
 
 	SDL_Texture* texture;
 
