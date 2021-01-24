@@ -18,6 +18,9 @@ Collisions::Collisions(bool startEnabled) : Module()
 
 	matrix[Collider::Type::FLOOR][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::FLOOR][Collider::Type::FLOOR] = false;
+
+	matrix[Collider::Type::GUN][Collider::Type::WATER] = true;
+	matrix[Collider::Type::GUN][Collider::Type::FLOOR] = true;
 }
 
 // Called before render is available
@@ -166,6 +169,9 @@ void Collisions::DebugDraw()
 			break;
 		case Collider::Type::AIR:
 			app->render->DrawRectangle(colliders[i]->rect, 250, 25, 5, alpha);
+			break;
+		case Collider::Type::GUN:
+			app->render->DrawRectangle(colliders[i]->rect, 200, 100, 200, alpha);
 			break;
 		}
 	}

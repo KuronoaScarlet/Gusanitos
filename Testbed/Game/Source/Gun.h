@@ -1,5 +1,6 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#pragma once
+#ifndef __GUN_H__
+#define __GUN_H__
 
 #include "Point.h"
 #include "Entity.h"
@@ -9,10 +10,10 @@
 struct SDL_Texture;
 struct Collider;
 
-class Player : Body
+class Gun : Body
 {
 public:
-	Player(Module* listener, fPoint position, float mass, float weight, float height, SDL_Texture* texture, Type type);
+	Gun(Module* listener, fPoint position, float mass, float weight, float height, SDL_Texture* texture, Type type);
 
 	bool Start();
 
@@ -25,15 +26,17 @@ public:
 	void CleanUp();
 
 private:
-	Animation rightAnimation;
-	Animation leftAnimation;
 
 	Animation* currentAnimation;
+	Animation rightAnimation;
 
 	SDL_Texture* tex;
 
-	bool isJumping;
-	bool gun = false;
+	float speedX;
+	float speedY;
+	float angle;
+	float laspositionx;
+	float laspositiony;
 };
 
 

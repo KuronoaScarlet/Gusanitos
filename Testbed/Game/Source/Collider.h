@@ -18,6 +18,7 @@ struct Collider
 		AIR,
 		LEVEL2,
 		LEVEL3,
+		GUN,
 
 		MAX
 	};

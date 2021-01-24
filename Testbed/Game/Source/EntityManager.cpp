@@ -5,6 +5,7 @@
 #include "Textures.h"
 #include "Render.h"
 #include "Player.h"
+#include "Gun.h"
 
 
 EntityManager::EntityManager() : Module()
@@ -81,10 +82,10 @@ void EntityManager::AddEntity(fPoint position, float mass, float weight, float h
         playerEntity = (Body*)(new Player((Module*)this, position, mass, weight, height, texPlayer, type));
         entityList.Add(playerEntity);
         break;
-    /*case Body::Type::GUIDEDMISSILE:
-        playerEntity = (Body*)(new GuidedMissile((Module*)this, position, texPlayer, type));
+    case Body::Type::GUN:
+        playerEntity = (Body*)(new Gun((Module*)this, position, mass, weight, height, texPlayer, type));
         entityList.Add(playerEntity);
-        break;*/
+        break;
     }
 
 }

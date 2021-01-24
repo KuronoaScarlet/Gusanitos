@@ -133,6 +133,14 @@ bool Player::Update(float dt)
 		velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ 0,-4000 }, mass, velocity).y;
 		isJumping = true;
 	}
+	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		gun = true;
+	}
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN && gun == true)
+	{
+		app->entityManager->AddEntity({ position.x, position.y }, 60.0f, 22.0f, 25.0f, Body::Type::GUN);
+	}
 
 	/////////////////////////////////////////PHYSICS LOGIC/////////////////////////////////////////
 	acceleration.x = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative, volume, inWater).x;

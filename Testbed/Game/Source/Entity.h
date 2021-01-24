@@ -14,7 +14,8 @@ public:
 	{
 		UNKNOWN,
 		PLAYER,
-		GUIDEDMISSILE
+		GUIDEDMISSILE,
+		GUN
 	};
 
 	Body(Module* listener, fPoint position, float mass, float weight, float height, SDL_Texture* texture, Type type) : listener(listener), position(position), mass(mass), weight(weight), height(height), texture(texture), type(type)

@@ -26,6 +26,9 @@
       <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModulePhysics.cpp" />
+    <ClCompile Include="Source\Gun.cpp">
+      <Filter>Entities\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -77,6 +80,9 @@
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModulePhysics.h" />
+    <ClInclude Include="Source\Gun.h">
+      <Filter>Entities\Weapons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -99,6 +105,9 @@
     </Filter>
     <Filter Include="Entities\Playable">
       <UniqueIdentifier>{6bab73b2-91fe-47e5-b007-719993058f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Weapons">
+      <UniqueIdentifier>{442fb62b-8ee0-4b48-917e-2d5b27083e57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
