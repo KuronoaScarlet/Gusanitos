@@ -1,4 +1,4 @@
-# Guorms
+# "Guorms"
 An amazing game of cars and bowling! Grupo Peko has developed it as a response to the Theory project of the Physics 2 course at CITM university. We wanted to innovate compared to what was presented to us as a prototype, and this is our proposal. Enjoy it!
 
 ## Features
