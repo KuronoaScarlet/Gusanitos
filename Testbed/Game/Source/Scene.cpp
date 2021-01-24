@@ -64,6 +64,8 @@ bool Scene::Start()
 
 	app->collisions->AddCollider({ 1930,180,26,26 }, Collider::Type::WIN, this);
 
+	app->entityManager->score = 0;
+
 	return true;
 }
 
