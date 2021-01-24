@@ -16,40 +16,7 @@ Gun::Gun(Module* listener, fPoint position, float mass, float weight, float heig
 {
 
 	rightAnimation.loop = true;
-	rightAnimation.PushBack({ 61, 17, 21, 26 });
-	rightAnimation.PushBack({ 61, 75, 22, 26 });
-	rightAnimation.PushBack({ 61, 135, 22, 26 });
-	rightAnimation.PushBack({ 61, 195, 22, 26 });
-	rightAnimation.PushBack({ 61, 256, 22, 25 });
-	rightAnimation.PushBack({ 61, 316, 22, 25 });
-	rightAnimation.PushBack({ 61, 376, 22, 25 });
-	rightAnimation.PushBack({ 61, 436, 22, 25 });
-	rightAnimation.PushBack({ 61, 496, 22, 25 });
-	rightAnimation.PushBack({ 61, 556, 22, 25 });
-	rightAnimation.PushBack({ 61, 616, 22, 25 });
-	rightAnimation.PushBack({ 61, 676, 22, 25 });
-	rightAnimation.PushBack({ 61, 736, 22, 25 });
-	rightAnimation.PushBack({ 61, 796, 22, 25 });
-	rightAnimation.PushBack({ 61, 856, 22, 26 });
-	rightAnimation.PushBack({ 61, 916, 22, 26 });
-	rightAnimation.PushBack({ 61, 976, 22, 25 });
-	rightAnimation.PushBack({ 61, 1037, 23, 25 });
-	rightAnimation.PushBack({ 61, 976, 22, 25 });
-	rightAnimation.PushBack({ 61, 915, 22, 26 });
-	rightAnimation.PushBack({ 61, 855, 22, 26 });
-	rightAnimation.PushBack({ 61, 796, 22, 25 });
-	rightAnimation.PushBack({ 61, 736, 22, 25 });
-	rightAnimation.PushBack({ 61, 676, 22, 25 });
-	rightAnimation.PushBack({ 61, 616, 22, 25 });
-	rightAnimation.PushBack({ 61, 556, 22, 25 });
-	rightAnimation.PushBack({ 61, 496, 22, 25 });
-	rightAnimation.PushBack({ 61, 376, 22, 25 });
-	rightAnimation.PushBack({ 61, 316, 22, 25 });
-	rightAnimation.PushBack({ 61, 256, 22, 25 });
-	rightAnimation.PushBack({ 61, 195, 22, 26 });
-	rightAnimation.PushBack({ 61, 135, 22, 26 });
-	rightAnimation.PushBack({ 61, 75, 22, 26 });
-	rightAnimation.PushBack({ 61, 16, 21, 25 });
+	rightAnimation.PushBack({ 0, 0, 16, 23 });
 	rightAnimation.speed = 0.1f;
 
 	currentAnimation = &rightAnimation;

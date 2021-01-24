@@ -83,7 +83,7 @@ void EntityManager::AddEntity(fPoint position, float mass, float weight, float h
         entityList.Add(playerEntity);
         break;
     case Body::Type::GUN:
-        bulletEntity = (Body*)(new Gun((Module*)this, position, mass, weight, height, texPlayer, type));
+        bulletEntity = (Body*)(new Gun((Module*)this, position, mass, weight, height, app->tex->Load("Assets/Textures/hgranade.png") , type));
         entityList.Add(bulletEntity);
         break;
     }

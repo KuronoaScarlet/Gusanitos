@@ -148,6 +148,39 @@ bool Player::Update(float dt)
 	collider->SetPos(position.x, position.y);
 	currentAnimation->Update();
 
+	if (position.x > 0 && position.x <= 509)
+	{
+		dirVelo = { -1.0f,0 };
+		surface = 20;
+		cd = 0;
+		velRelative = 0;
+
+
+	}
+	if (position.x > 509 && position.x < 974)
+	{
+		dirVelo = { -1.0f,0 };
+		surface = 20;
+		cd = 20;
+		velRelative = 20;
+
+
+	}
+	if (position.x > 974 && position.x < 1600)
+	{
+		dirVelo = { 0, 1.0 };
+		surface = 19;
+		cd = 4;
+		velRelative = 10;
+	}
+	if (position.x > 1600 && position.x < 3000)
+	{
+		dirVelo = { 0, 0 };
+		surface = 20;
+		cd = 0;
+		velRelative = 0;
+	}
+	
 	return true;
 }
 
@@ -181,24 +214,7 @@ void Player::Collision(Collider* coll)
 		app->entityManager->integrator->normalForce.x = 0;
 		app->entityManager->integrator->normalForce.y = 0;
 	}
-	if (coll->type == Collider::Type::LEVEL2)
-	{
-		dirVelo = { -1.0f,0 };
-		surface = 20;
-		cd = 20;
-		velRelative = 20;
-		volume = 0;
-		inWater = false;
-	}
-	if (coll->type == Collider::Type::LEVEL3)
-	{
-		dirVelo = { 0, 1.0 };
-		surface = 19;
-		cd = 4;
-		velRelative = 10;
-		volume = 0;
-		inWater = false;
-	}
+	
 
 }
 

@@ -50,9 +50,6 @@ bool Scene::Start()
 
 	app->collisions->AddCollider({ 183,200,154,500 }, Collider::Type::WATER, this);
 
-	app->collisions->AddCollider({ 509,-15,5,259 }, Collider::Type::LEVEL2, this);
-	app->collisions->AddCollider({ 974,-17,5,259 }, Collider::Type::LEVEL3, this);
-
 	return true;
 }
 

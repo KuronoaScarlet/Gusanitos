@@ -13,8 +13,7 @@ Collisions::Collisions(bool startEnabled) : Module()
 	matrix[Collider::Type::PLAYER][Collider::Type::FLOOR] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::WATER] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::AIR] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::LEVEL2] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::LEVEL3] = true;
+
 
 	matrix[Collider::Type::FLOOR][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::FLOOR][Collider::Type::FLOOR] = false;
