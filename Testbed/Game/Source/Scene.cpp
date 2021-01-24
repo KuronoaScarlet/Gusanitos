@@ -40,6 +40,17 @@ bool Scene::Start()
 	app->entityManager->Start();
 	app->entityManager->AddEntity({50.0f,100.0f}, 60.0f, 22.0f, 25.0f, Body::Type::PLAYER);
 
+	app->entityManager->AddEntity({ 300.0f, 100.0f }, 15.0f, 20.0f, 20.0f, Body::Type::TARGET);
+	app->entityManager->AddEntity({ 480.0f, 70.0f }, 15.0f, 20.0f, 20.0f, Body::Type::TARGET);
+	app->entityManager->AddEntity({ 540.0f, 30.0f }, 15.0f, 20.0f, 20.0f, Body::Type::TARGET);
+	app->entityManager->AddEntity({ 700.0f, 90.0f }, 15.0f, 20.0f, 20.0f, Body::Type::TARGET);
+	app->entityManager->AddEntity({ 820.0f, 120.0f }, 15.0f, 20.0f, 20.0f, Body::Type::TARGET);
+	app->entityManager->AddEntity({ 900.0f, 55.0f }, 15.0f, 20.0f, 20.0f, Body::Type::TARGET);
+	app->entityManager->AddEntity({ 1020.0f, 75.0f }, 15.0f, 20.0f, 20.0f, Body::Type::TARGET);
+	app->entityManager->AddEntity({ 1160.0f, 85.0f }, 15.0f, 20.0f, 20.0f, Body::Type::TARGET);
+	app->entityManager->AddEntity({ 1320.0f, 30.0f }, 15.0f, 20.0f, 20.0f, Body::Type::TARGET);
+	app->entityManager->AddEntity({ 1520.0f, 60.0f }, 15.0f, 20.0f, 20.0f, Body::Type::TARGET);
+
 	waterBckGrnd = app->tex->Load("Assets/Textures/water.png");
 	app->collisions->active = true;
 

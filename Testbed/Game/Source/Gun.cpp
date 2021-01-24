@@ -33,12 +33,12 @@ Gun::Gun(Module* listener, fPoint position, float mass, float weight, float heig
 	app->input->GetMousePosition(x, y);	
 	app->render->ScreenToWorld(x,y);
 
-	vDestination = { x - (float)50, y - (float)170};
+	vDestination = { x - (float)50, y - (float)190};
 	modDestination = sqrt(pow(vDestination.x, 2) + pow(vDestination.y, 2));
 	normDestination = { vDestination.x / modDestination, vDestination.y / modDestination }; 
 
-	velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ normDestination.x * 4000, normDestination.y * 4000 }, mass, velocity).x;
-	velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ normDestination.x * 4000, normDestination.y * 4000 }, mass, velocity).y;
+	velocity.x = app->entityManager->bulletIntegrator->AddMomentum(fPoint{ normDestination.x * 4000, normDestination.y * 4000 }, mass, velocity).x;
+	velocity.y = app->entityManager->bulletIntegrator->AddMomentum(fPoint{ normDestination.x * 4000, normDestination.y * 4000 }, mass, velocity).y;
 
 }
 
@@ -57,6 +57,28 @@ bool Gun::Update(float dt)
 	position.y = app->entityManager->bulletIntegrator->Integrator(dt, &position, &velocity, &acceleration).y;
 
 	if (volume <= 0) inWater = false;
+
+	if (position.x > 0 && position.x <= 509)
+	{
+		dirVelo = { -1.0f,0 };
+		surface = 2;
+		cd = 0;
+		velRelative = 0;
+	}
+	if (position.x > 509 && position.x < 974)
+	{
+		dirVelo = { -1.0f,0 };
+		surface = 2;
+		cd = 20;
+		velRelative = 12;
+	}
+	if (position.x > 974 && position.x < 1600)
+	{
+		dirVelo = { 0, 1.0 };
+		surface = 4;
+		cd = 20;
+		velRelative = 12;
+	}
 
 	collider->SetPos(position.x, position.y);
 	currentAnimation->Update();
@@ -79,10 +101,14 @@ void Gun::Collision(Collider* coll)
 		pendingToDelete = true;
 		collider->pendingToDelete = true;
 	}
-
 	if (coll->type == Collider::Type::WATER)
 	{
-
+		inWater = true;
+	}
+	if (coll->type == Collider::Type::TARGET)
+	{
+		pendingToDelete = true;
+		collider->pendingToDelete = true;
 	}
 }
 

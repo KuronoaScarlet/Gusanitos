@@ -108,12 +108,12 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		currentAnimation = &leftAnimation;
-		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ -4500,0 }, mass, velocity).x;
+		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ -4000,0 }, mass, velocity).x;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		currentAnimation = &rightAnimation;
-		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ 4500,0 }, mass, velocity).x;
+		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ 4000,0 }, mass, velocity).x;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && isJumping == false)
 	{
@@ -121,11 +121,7 @@ bool Player::Update(float dt)
 		velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ 0,-4000 }, mass, velocity).y;
 		isJumping = true;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		gun = true;
-	}
-	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN && gun == true)
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 	{
 
 		app->entityManager->AddEntity({ position.x, position.y-7 }, 10.0f, 16.0f, 16.0f, Body::Type::GUN);
@@ -154,8 +150,6 @@ bool Player::Update(float dt)
 		surface = 20;
 		cd = 0;
 		velRelative = 0;
-
-
 	}
 	if (position.x > 509 && position.x < 974)
 	{
@@ -163,8 +157,6 @@ bool Player::Update(float dt)
 		surface = 20;
 		cd = 20;
 		velRelative = 20;
-
-
 	}
 	if (position.x > 974 && position.x < 1600)
 	{
@@ -214,8 +206,6 @@ void Player::Collision(Collider* coll)
 		app->entityManager->integrator->normalForce.x = 0;
 		app->entityManager->integrator->normalForce.y = 0;
 	}
-	
-
 }
 
 void Player::CleanUp()

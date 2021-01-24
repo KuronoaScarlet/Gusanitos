@@ -17,6 +17,7 @@ struct Collider
 		WATER,
 		AIR,
 		GUN,
+		TARGET,
 
 		MAX
 	};

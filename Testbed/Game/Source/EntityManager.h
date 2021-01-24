@@ -45,12 +45,16 @@ public:
 
     List<Body*> entityList;
 
+    int score = 0;
+
 private:
 
     SDL_Texture* texPlayer;
+    SDL_Texture* texTarget;
 
     Body* playerEntity;
     Body* bulletEntity;
+    Body* targertEntity;
 };
 
 #endif // _ENTITYMANAGER_H_

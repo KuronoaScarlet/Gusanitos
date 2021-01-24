@@ -6,6 +6,7 @@
 #include "Render.h"
 #include "Player.h"
 #include "Gun.h"
+#include "Target.h"
 
 
 EntityManager::EntityManager() : Module()
@@ -21,6 +22,7 @@ bool EntityManager::Awake()
 bool EntityManager::Start()
 {
     texPlayer = app->tex->Load("Assets/Textures/player.png");
+    texTarget = app->tex->Load("Assets/Textures/target.png");
 
     return true;
 }
@@ -85,6 +87,10 @@ void EntityManager::AddEntity(fPoint position, float mass, float weight, float h
     case Body::Type::GUN:
         bulletEntity = (Body*)(new Gun((Module*)this, position, mass, weight, height, app->tex->Load("Assets/Textures/hgranade.png") , type));
         entityList.Add(bulletEntity);
+        break;
+    case Body::Type::TARGET:
+        targertEntity = (Body*)(new Target((Module*)this, position, mass, weight, height, texTarget, type));
+        entityList.Add(targertEntity);
         break;
     }
 
