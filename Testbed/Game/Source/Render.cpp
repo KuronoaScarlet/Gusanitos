@@ -249,3 +249,13 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 
 	return ret;
 }
+
+fPoint Render::ScreenToWorld(int x, int y) const
+{
+	fPoint ret;
+
+	ret.x = (x - camera.x / app->win->GetScale());
+	ret.y = (y - camera.y / app->win->GetScale());
+
+	return ret;
+}

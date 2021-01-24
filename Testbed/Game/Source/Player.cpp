@@ -127,6 +127,7 @@ bool Player::Update(float dt)
 	}
 	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN && gun == true)
 	{
+
 		app->entityManager->AddEntity({ position.x, position.y-7 }, 10.0f, 16.0f, 16.0f, Body::Type::GUN);
 	}
 

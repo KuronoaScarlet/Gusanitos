@@ -10,6 +10,8 @@
 #include "ModulePhysics.h"
 #include "Log.h"
 
+#define SPEED 5
+
 Gun::Gun(Module* listener, fPoint position, float mass, float weight, float height, SDL_Texture* texture, Type type) : Body(listener, position, mass, weight, height, texture, type)
 {
 
@@ -61,12 +63,16 @@ Gun::Gun(Module* listener, fPoint position, float mass, float weight, float heig
 	volume = 0;
 	inWater = false;
 
-	vDestination = { abs((float)app->input->GetMouseX() + (-app->render->camera.x)) - position.x, (float)app->input->GetMouseY() - position.y };
+	app->input->GetMousePosition(x, y);	
+	app->render->ScreenToWorld(x,y);
+
+	vDestination = { x - (float)50, y - (float)170};
 	modDestination = sqrt(pow(vDestination.x, 2) + pow(vDestination.y, 2));
 	normDestination = { vDestination.x / modDestination, vDestination.y / modDestination }; 
 
 	velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ normDestination.x * 4000, normDestination.y * 4000 }, mass, velocity).x;
 	velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ normDestination.x * 4000, normDestination.y * 4000 }, mass, velocity).y;
+
 }
 
 bool Gun::Start()
@@ -82,7 +88,6 @@ bool Gun::Update(float dt)
 
 	position.x = app->entityManager->bulletIntegrator->Integrator(dt, &position, &velocity, &acceleration).x;
 	position.y = app->entityManager->bulletIntegrator->Integrator(dt, &position, &velocity, &acceleration).y;
-
 
 	if (volume <= 0) inWater = false;
 

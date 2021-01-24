@@ -35,6 +35,11 @@ private:
 	fPoint vDestination;
 	float modDestination;
 	fPoint normDestination;
+	int x;
+	int y;
+
+	float speedX;
+	float speedY;
 };
 
 
