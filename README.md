@@ -5,7 +5,7 @@ An amazing game of cars and bowling! Grupo Peko has developed it as a response t
 - Fully working Physics Engine.
 - Navigable Map.
 - 3 Types of Physical Forces implemented: Gravity, Aerodynammics and Hydrodynamics!
-- A weapon and some targets to 
+- A weapon and some targets to shoot!
 
 ## Controls
 - WASD: Move your Worm!
