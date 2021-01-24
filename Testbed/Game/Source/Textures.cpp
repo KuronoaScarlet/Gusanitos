@@ -61,7 +61,7 @@ bool Textures::CleanUp()
 }
 
 // Load new texture from file path
-SDL_Texture* const Textures::Load(const char* path)
+/*SDL_Texture* const Textures::Load(const char* path)
 {
 	SDL_Texture* texture = NULL;
 	SDL_Surface* surface = IMG_Load(path);
@@ -77,7 +77,7 @@ SDL_Texture* const Textures::Load(const char* path)
 	}
 
 	return texture;
-}
+}*/
 
 // Unload texture
 bool Textures::UnLoad(SDL_Texture* texture)
@@ -119,3 +119,31 @@ void Textures::GetSize(const SDL_Texture* texture, uint& width, uint& height) co
 {
 	SDL_QueryTexture((SDL_Texture*)texture, NULL, NULL, (int*) &width, (int*) &height);
 }
+SDL_Texture* const Textures::Load(const char* path)
+{
+	SDL_Texture* texture = NULL;
+	SDL_Surface* surface = IMG_Load(path);
+
+	if (surface == NULL)
+	{
+		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
+	}
+	else
+	{
+		texture = SDL_CreateTextureFromSurface(app->render->renderer, surface);
+
+		if (texture == NULL)
+		{
+			LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			textures.Add(texture);
+		}
+
+		SDL_FreeSurface(surface);
+	}
+
+	return texture;
+}
+

@@ -12,7 +12,10 @@ class Input;
 class Render;
 class Textures;
 class Audio;
+class ModuleFonts;
 class Scene;
+class Logo;
+class Win;
 class EntityManager;
 class Collisions;
 
@@ -75,7 +78,10 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
+	ModuleFonts* fonts;
+	Logo* logo;
 	Scene* scene;
+	Win* winCondition;
 	EntityManager* entityManager;
 	Collisions* collisions;
 

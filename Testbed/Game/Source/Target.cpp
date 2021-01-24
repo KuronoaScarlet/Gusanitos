@@ -50,7 +50,7 @@ void Target::Collision(Collider* coll)
 	{
 		pendingToDelete = true;
 		collider->pendingToDelete = true;
-		app->entityManager->score += 100;
+		app->entityManager->score += 50;
 	}
 }
 

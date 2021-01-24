@@ -107,6 +107,7 @@ void Gun::Collision(Collider* coll)
 	{
 		pendingToDelete = true;
 		collider->pendingToDelete = true;
+		
 	}
 }
 

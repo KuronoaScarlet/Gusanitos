@@ -32,6 +32,13 @@
     <ClCompile Include="Source\Target.cpp">
       <Filter>Entities\Non Playable</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleFonts.cpp" />
+    <ClCompile Include="Source\Logo.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Win.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -88,6 +95,13 @@
     </ClInclude>
     <ClInclude Include="Source\Target.h">
       <Filter>Entities\Non Playable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleFonts.h" />
+    <ClInclude Include="Source\Logo.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Win.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

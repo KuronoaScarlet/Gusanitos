@@ -4,7 +4,10 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
+#include "ModuleFonts.h"
 #include "Scene.h"
+#include "Logo.h"
+#include "Win.h"
 #include "Player.h"
 #include "Collisions.h"
 #include "EntityManager.h"
@@ -25,15 +28,21 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
+	fonts = new ModuleFonts(this);
 	entityManager = new EntityManager();
 	scene = new Scene();
+	logo = new Logo();
+	winCondition = new Win();
 	collisions = new Collisions(false);
 
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(fonts);
+	AddModule(logo);
 	AddModule(scene);
+	AddModule(winCondition);
 	AddModule(entityManager);
 
 	// Render last to swap buffer
@@ -41,7 +50,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collisions);
 	AddModule(render);
 
-	scene->active = true;
+	logo->active = true;
+	scene->active = false;
+	winCondition->active = false;
 }
 
 App::~App()

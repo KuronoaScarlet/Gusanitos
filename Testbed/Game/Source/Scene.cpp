@@ -35,6 +35,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+	active = true;
 	bckground = app->tex->Load("Assets/Textures/background.png");
 
 	app->entityManager->Start();
@@ -60,6 +61,8 @@ bool Scene::Start()
 	app->collisions->AddCollider({ 337,200,1800,50 }, Collider::Type::FLOOR, this);
 
 	app->collisions->AddCollider({ 183,200,154,500 }, Collider::Type::WATER, this);
+
+	app->collisions->AddCollider({ 1930,180,26,26 }, Collider::Type::WIN, this);
 
 	return true;
 }
@@ -103,6 +106,7 @@ bool Scene::CleanUp()
 	if (!active)return true;
 	app->entityManager->CleanUp();
 	app->scene->active = false;
+	app->collisions->CleanUp();
 
 	LOG("Freeing scene");
 	return true;

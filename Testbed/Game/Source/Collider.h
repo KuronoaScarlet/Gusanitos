@@ -18,6 +18,7 @@ struct Collider
 		AIR,
 		GUN,
 		TARGET,
+		WIN,
 
 		MAX
 	};

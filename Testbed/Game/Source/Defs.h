@@ -13,6 +13,7 @@
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
+#define SCREEN_SIZE 1
 
 #define G 6.69*pow(10,-8.3)
 #define AIR_DENSITY 1.225
