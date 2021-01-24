@@ -10,8 +10,6 @@
 #include "ModulePhysics.h"
 #include "Log.h"
 
-#define SPEED 5
-
 Gun::Gun(Module* listener, fPoint position, float mass, float weight, float height, SDL_Texture* texture, Type type) : Body(listener, position, mass, weight, height, texture, type)
 {
 
