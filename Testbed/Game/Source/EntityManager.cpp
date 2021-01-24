@@ -83,8 +83,8 @@ void EntityManager::AddEntity(fPoint position, float mass, float weight, float h
         entityList.Add(playerEntity);
         break;
     case Body::Type::GUN:
-        playerEntity = (Body*)(new Gun((Module*)this, position, mass, weight, height, texPlayer, type));
-        entityList.Add(playerEntity);
+        bulletEntity = (Body*)(new Gun((Module*)this, position, mass, weight, height, texPlayer, type));
+        entityList.Add(bulletEntity);
         break;
     }
 

@@ -18,6 +18,7 @@ Collisions::Collisions(bool startEnabled) : Module()
 
 	matrix[Collider::Type::FLOOR][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::FLOOR][Collider::Type::FLOOR] = false;
+	matrix[Collider::Type::FLOOR][Collider::Type::GUN] = true;
 
 	matrix[Collider::Type::GUN][Collider::Type::WATER] = true;
 	matrix[Collider::Type::GUN][Collider::Type::FLOOR] = true;

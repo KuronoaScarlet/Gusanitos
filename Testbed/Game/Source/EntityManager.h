@@ -41,6 +41,7 @@ public:
     void OnCollision(Collider* a, Collider* b);
 
     PhysicsEngine* integrator = new PhysicsEngine();
+    PhysicsEngine* bulletIntegrator = new PhysicsEngine();
 
     List<Body*> entityList;
 
@@ -49,10 +50,7 @@ private:
     SDL_Texture* texPlayer;
 
     Body* playerEntity;
-
-    //Fonts
-    int scoreFont = -1;
-    char scoreText[10] = { "\0" };
+    Body* bulletEntity;
 };
 
 #endif // _ENTITYMANAGER_H_

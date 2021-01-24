@@ -32,11 +32,9 @@ private:
 
 	SDL_Texture* tex;
 
-	float speedX;
-	float speedY;
-	float angle;
-	float laspositionx;
-	float laspositiony;
+	fPoint vDestination;
+	float modDestination;
+	fPoint normDestination;
 };
 
 

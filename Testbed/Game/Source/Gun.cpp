@@ -9,8 +9,6 @@
 #include "EntityManager.h"
 #include "ModulePhysics.h"
 
-#define SPEED 1
-
 Gun::Gun(Module* listener, fPoint position, float mass, float weight, float height, SDL_Texture* texture, Type type) : Body(listener, position, mass, weight, height, texture, type)
 {
 
@@ -53,39 +51,21 @@ Gun::Gun(Module* listener, fPoint position, float mass, float weight, float heig
 
 	currentAnimation = &rightAnimation;
 
-	collider = collider = app->collisions->AddCollider(SDL_Rect{ (int)position.x,(int)position.y, 22, 25 }, Collider::Type::GUN, listener);
+	collider = collider = app->collisions->AddCollider(SDL_Rect{ (int)position.x,(int)position.y, 16, 16 }, Collider::Type::GUN, listener);
 
-	dirVelo = { 0,0 };
-	surface = 0;
-	cd = 0;
-	velRelative = 0;
+	dirVelo = { 1.0f,0 };
+	surface = 1;
+	cd = 1;
+	velRelative = 20;
 	volume = 0;
 	inWater = false;
 
+	vDestination = { (float)app->input->GetMouseX() - position.x, (float)app->input->GetMouseY() - position.y };
+	modDestination = sqrt(pow(vDestination.x, 2) + pow(vDestination.y, 2));
+	normDestination = { vDestination.x / modDestination, vDestination.y / modDestination }; 
 
-
-	fPoint vOrigin = { (float)app->input->GetMouseX() - position.x, 0 };
-	fPoint vDestination = { (float)app->input->GetMouseX() - position.x, (float)app->input->GetMouseY() - position.y };
-
-	float pointProduct = (vOrigin.x * vDestination.x) + (vOrigin.y * vDestination.y);
-
-	float originMagnitude = sqrt(pow(vOrigin.x, 2) + pow(vOrigin.y, 2));
-	float destinationMagnitude = sqrt(pow(vDestination.x, 2) + pow(vDestination.y, 2));
-
-	angle = acos(pointProduct / (originMagnitude * destinationMagnitude));
-
-	if ((float)app->input->GetMouseX() > position.x)
-	{
-		speedX = SPEED * cos(angle);
-	}
-	else speedX = -SPEED * cos(angle);
-
-	if ((float)app->input->GetMouseY() > position.y)
-	{
-		speedY = SPEED * sin(angle);
-	}
-	else speedY = SPEED * sin(-angle);
-
+	velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ normDestination.x * 4000, normDestination.y * 4000 }, mass, velocity).x;
+	velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ normDestination.x * 4000, normDestination.y * 4000 }, mass, velocity).y;
 }
 
 bool Gun::Start()
@@ -95,39 +75,13 @@ bool Gun::Start()
 
 bool Gun::Update(float dt)
 {
-	/*if (app->input->GetKey(SDL_SCANCODE_A))
-	{
-		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ -5,0 }, mass, velocity).x;
-		velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ -5,0 }, mass, velocity).y;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_D))
-	{
-		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ 5,0 }, mass, velocity).x;
-		velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ 5,0 }, mass, velocity).y;
-	}*/
-
-
-
 	/////////////////////////////////////////PHYSICS LOGIC/////////////////////////////////////////
-	//acceleration.x = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative, volume, inWater).x;
-	//acceleration.y = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative, volume, inWater).y;
+	acceleration.x = app->entityManager->bulletIntegrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative, volume, inWater).x;
+	acceleration.y = app->entityManager->bulletIntegrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative, volume, inWater).y;
 
-	//position.x = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).x;
-	//position.y = app->entityManager->integrator->Integrator(dt, &position, &velocity, &acceleration).y;
-	position.x += speedX;
-	position.y += speedY;
+	position.x = app->entityManager->bulletIntegrator->Integrator(dt, &position, &velocity, &acceleration).x;
+	position.y = app->entityManager->bulletIntegrator->Integrator(dt, &position, &velocity, &acceleration).y;
 
-	/*if ((float)app->input->GetMouseX() > position.x)
-	{
-		speedX = SPEED * cos(angle);
-	}
-	else speedX = -SPEED * cos(angle);
-
-	if ((float)app->input->GetMouseY() > position.y)
-	{
-		speedY = SPEED * sin(angle);
-	}
-	else speedY = SPEED * sin(-angle);*/
 
 	if (volume <= 0) inWater = false;
 
@@ -149,8 +103,10 @@ void Gun::Collision(Collider* coll)
 {
 	if (coll->type == Collider::Type::FLOOR)
 	{
-
+		pendingToDelete = true;
+		collider->pendingToDelete = true;
 	}
+
 	if (coll->type == Collider::Type::WATER)
 	{
 

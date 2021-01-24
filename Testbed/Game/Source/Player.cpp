@@ -96,16 +96,6 @@ Player::Player(Module* listener, fPoint position, float mass, float weight, floa
 	velRelative = 20;
 	volume = 0;
 	inWater = false;
-
-	/**/
-	
-	dirVelo = { 0.0f,0 };
-	surface = 0;
-	cd = 0;
-	velRelative = 0;
-	volume = 0;
-	inWater = false;
-	isJumping = false;
 }
 
 bool Player::Start()
@@ -118,14 +108,12 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		currentAnimation = &leftAnimation;
-		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ -5000,0 }, mass, velocity).x;
-		//velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ -5,0 }, mass, velocity).y;
+		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ -4500,0 }, mass, velocity).x;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		currentAnimation = &rightAnimation;
-		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ 5000,0 }, mass, velocity).x;
-		//velocity.y = app->entityManager->integrator->AddMomentum(fPoint{ 5,0 }, mass, velocity).y;
+		velocity.x = app->entityManager->integrator->AddMomentum(fPoint{ 4500,0 }, mass, velocity).x;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && isJumping == false)
 	{
@@ -139,7 +127,7 @@ bool Player::Update(float dt)
 	}
 	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN && gun == true)
 	{
-		app->entityManager->AddEntity({ position.x, position.y }, 60.0f, 22.0f, 25.0f, Body::Type::GUN);
+		app->entityManager->AddEntity({ position.x, position.y-7 }, 10.0f, 16.0f, 16.0f, Body::Type::GUN);
 	}
 
 	/////////////////////////////////////////PHYSICS LOGIC/////////////////////////////////////////
@@ -185,7 +173,6 @@ void Player::Collision(Collider* coll)
 	if (coll->type == Collider::Type::WATER)
 	{
 		inWater = true;
-		//volume = (position.y + collider->rect.h) - coll->rect.y;
 	}
 	if (coll->type == Collider::Type::AIR)
 	{
