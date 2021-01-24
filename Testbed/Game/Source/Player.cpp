@@ -207,7 +207,7 @@ void Player::Collision(Collider* coll)
 		app->entityManager->integrator->normalForce.x = -app->entityManager->integrator->df.x;
 		isJumping = false;
 
-		//position.y = coll->rect.y - coll->rect.h + 25;
+		
 	}
 	if (coll->type == Collider::Type::WATER)
 	{
