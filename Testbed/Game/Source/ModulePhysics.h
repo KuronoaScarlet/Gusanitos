@@ -16,8 +16,6 @@ public:
 
 	fPoint AddMomentum(fPoint momentum, float mass, fPoint velocity);
 
-	void AddForce(fPoint force);
-
 	fPoint Integrator(float dt, fPoint* position, fPoint* velocity, fPoint* acceleration);
 
 	//Forces

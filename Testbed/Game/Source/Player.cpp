@@ -134,6 +134,9 @@ bool Player::Update(float dt)
 	}
 
 	/////////////////////////////////////////PHYSICS LOGIC/////////////////////////////////////////
+
+	
+
 	acceleration.x = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative, volume, inWater).x;
 	acceleration.y = app->entityManager->integrator->IntegratePhysics(position, mass, center, dirVelo, surface, cd, velRelative, volume, inWater).y;
 
@@ -150,28 +153,28 @@ bool Player::Update(float dt)
 	collider->SetPos(position.x, position.y);
 	currentAnimation->Update();
 
-	if (position.x > 0 && position.x <= 509)
+	if (position.x > 0 && position.x < 480)
 	{
 		dirVelo = { -1.0f,0 };
 		surface = 20;
 		cd = 0;
 		velRelative = 0;
 	}
-	if (position.x > 509 && position.x < 974)
+	if (position.x > 500 && position.x < 974)
 	{
 		dirVelo = { -1.0f,0 };
 		surface = 20;
 		cd = 20;
 		velRelative = 20;
 	}
-	if (position.x > 974 && position.x < 1600)
+	if (position.x > 994 && position.x < 1600)
 	{
 		dirVelo = { 0, 1.0 };
 		surface = 19;
 		cd = 4;
 		velRelative = 10;
 	}
-	if (position.x > 1600 && position.x < 3000)
+	if (position.x > 1620 && position.x < 3000)
 	{
 		dirVelo = { 0, 0 };
 		surface = 20;
