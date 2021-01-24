@@ -8,6 +8,7 @@
 #include "Audio.h"
 #include "EntityManager.h"
 #include "ModulePhysics.h"
+#include "Log.h"
 
 Gun::Gun(Module* listener, fPoint position, float mass, float weight, float height, SDL_Texture* texture, Type type) : Body(listener, position, mass, weight, height, texture, type)
 {
@@ -60,7 +61,7 @@ Gun::Gun(Module* listener, fPoint position, float mass, float weight, float heig
 	volume = 0;
 	inWater = false;
 
-	vDestination = { (float)app->input->GetMouseX() - position.x, (float)app->input->GetMouseY() - position.y };
+	vDestination = { abs((float)app->input->GetMouseX() + (-app->render->camera.x)) - position.x, (float)app->input->GetMouseY() - position.y };
 	modDestination = sqrt(pow(vDestination.x, 2) + pow(vDestination.y, 2));
 	normDestination = { vDestination.x / modDestination, vDestination.y / modDestination }; 
 
